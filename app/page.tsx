@@ -3,7 +3,7 @@ import React from "react";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import Navbar from "@/components/navbar";
 import Link from "next/link";
-import { BentoGridSecondDemo } from "@/components/features";
+import { CardHoverEffectDemo } from "@/components/features";
 import { InfiniteMovingCardsDemo } from "@/components/reviews";
 import { TextGenerateEffectDemo } from "@/components/description";
 import Footer from "@/components/footer";
@@ -24,12 +24,14 @@ export default function BackgroundBeamsDemo() {
           <div className="flex justify-center">
             <TextGenerateEffectDemo />
           </div>
-          <div className="mt-[]">
-            <Link
-              href="/get-started"
-              className="inline-block  px-6 py-3 mt-6 font-medium text-lg text-white bg-[#228b22] rounded-lg hover:bg-[#196a19]"
-            >
-              Get Started
+          <div>
+            <Link href={""}>
+              <button className="relative inline-flex h-12 mt-4 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 hover:scale-105 transition ease-in focus:ring-offset-2 focus:ring-offset-slate-50">
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
+                <span className="inline-flex px-8 py-4 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
+                  Get Started
+                </span>
+              </button>
             </Link>
           </div>
         </div>
@@ -40,7 +42,7 @@ export default function BackgroundBeamsDemo() {
         <h2 className="text-4xl font-semibold text-center mt-16 mb-10">
           Our Featured Solutions
         </h2>
-        <BentoGridSecondDemo /> {/*can use wobble cards */}
+        <CardHoverEffectDemo /> {/*can use wobble cards */}
       </div>
 
       {/* Reviews */}
@@ -49,7 +51,7 @@ export default function BackgroundBeamsDemo() {
           What Our Customers Say
         </h2>
         {/* Add reviews component */}
-      <InfiniteMovingCardsDemo />
+        <InfiniteMovingCardsDemo />
       </div>
 
       {/* Footer */}

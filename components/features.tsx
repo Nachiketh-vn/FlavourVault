@@ -1,75 +1,66 @@
-import { cn } from "@/lib/utils";
-import React from "react";
-import { BentoGrid, BentoGridItem } from "../components/ui/bento-grid";
-import {
-  IconClipboardCopy,
-  IconFileBroken,
-  IconSignature,
-  IconTableColumn,
-} from "@tabler/icons-react";
+import { HoverEffect } from "../components/ui/card-hover-effect";
 
-export function BentoGridSecondDemo() {
+export function CardHoverEffectDemo() {
   return (
-    <BentoGrid className="max-w-4xl  px-4 lg:w-4/5 mx-auto md:auto-rows-[20rem]">
-      {items.map((item, i) => (
-        <BentoGridItem
-          key={i}
-          title={item.title}
-          description={item.description}
-          header={item.header}
-          className={item.className}
-        />
-      ))}
-    </BentoGrid>
+    <div className="max-w-5xl mx-auto px-8">
+      <HoverEffect items={projects} />
+    </div>
   );
 }
-
-const Skeleton = () => (
-  <div className="flex flex-1 w-full h-full min-h-[6rem] rounded-xl  border border-transparent  bg-black"></div>
-);
-
-const items = [
+export const projects = [
   {
-    title: "Real-Time Menu Updates",
+    title: "Easy Menu Updation",
     description:
-      "Instantly update menu items and prices, ensuring customers always see the latest offerings.",
-    header: <Skeleton />,
-    className: "md:col-span-2 bg-black text-white border-white",
+      "Instantly update your restaurant's menu with an intuitive interface, ensuring customers always see the latest offerings.",
+    link: "/features",
   },
   {
-    title: "Mobile-Friendly and Accessible",
+    title: "Promote a Particular Dish",
     description:
-      "Allow customers to browse your menu easily on any device, enhancing convenience and engagement.",
-    header: <Skeleton />,
-    className: "md:col-span-1 bg-black text-white border-white",
+      "Highlight daily specials or signature dishes to attract customer attention directly on the digital menu.",
+    link: "/features",
   },
   {
-    title: "Cost-Efficient and Eco-Friendly",
+    title: "Dish Recommendation System",
     description:
-      "Save on printing costs while reducing paper waste by switching to a digital menu.",
-    header: <Skeleton />,
-    className: "md:col-span-1 bg-black text-white border-white",
+      "Utilize AI-driven recommendations to help diners discover new dishes tailored to their preferences.",
+    link: "/features",
   },
   {
-    title: "Enhanced Customer Experience",
+    title: "Reduce Menu Cost",
     description:
-      "Provide interactive features like images and dietary filters for a personalized dining experience.",
-    header: <Skeleton />,
-    className: "md:col-span-2 bg-black text-white border-white",
+      "Significantly cut down costs associated with printing by switching to digital menus, saving time and money.",
+    link: "/features",
   },
   {
-    title: "Better Marketing Opportunities",
+    title: "User-Friendly & Addictive UI",
     description:
-      "Utilize your online menu for promotions and social media engagement to attract new customers.",
-    header: <Skeleton />,
-    className: "md:col-span-2 bg-black text-white border-white",
+      "Enjoy a clean, intuitive design that keeps customers engaged and makes navigation seamless for restaurant staff.",
+    link: "/features",
   },
   {
-    title: "Analytics and Insights",
+    title: "Admin Dashboard to Get Analytics",
     description:
-      "Track customer preferences and item popularity to make informed menu decisions and optimize offerings.",
-    header: <Skeleton />,
-    className: "md:col-span-1 bg-black text-white border-white",
+      "Access real-time analytics to gain insights on customer behavior and optimize your menu offerings effectively.",
+    link: "/features",
+  },
+  {
+    title: "Customer Entertainment During Preparation",
+    description:
+      "Keep customers entertained with current news and fun games while they wait for their orders.",
+    link: "/features",
+  },
+  {
+    title: "Multi-Language Support",
+    description:
+      "Cater to a diverse audience by providing multi-language support for easy menu navigation.",
+    link: "/features",
+  },
+  {
+    title: "Call Waiter Option",
+    description:
+      "Allow customers to call a waiter directly from the app for improved service efficiency.",
+    link: "/features",
   },
 ];
 

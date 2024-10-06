@@ -7,7 +7,7 @@ export const TextGenerateEffect = ({
   words,
   className,
   filter = true,
-  duration = 0.5,
+  duration = 1,
 }: {
   words: string;
   className?: string;
@@ -26,7 +26,7 @@ export const TextGenerateEffect = ({
       },
       {
         duration: duration || 1,
-        delay: stagger(0.2),
+        delay: stagger(0.04),
       }
     );
   }, [scope, animate, filter, duration]);
@@ -38,7 +38,7 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              className="dark:text-white text-black opacity-0"
+              className="text-white opacity-0"
               style={{
                 filter: filter ? "blur(10px)" : "none",
                 position: "relative", // Ensure relative positioning

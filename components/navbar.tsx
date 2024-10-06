@@ -29,7 +29,9 @@ function Navbar() {
         <div className="flex justify-between h-16 items-center">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold text-white">LOGO</h1>
+            <Link href={"/"}>
+              <h1 className="text-2xl font-bold text-white">LOGO</h1>
+            </Link>
           </div>
 
           {/* Desktop Menu */}
@@ -39,7 +41,7 @@ function Navbar() {
                 <li key={index}>
                   <Link
                     href={item.href}
-                    className="text-white text-lg font-medium hover:text-[#2ecc71] transition  ease-in-out"
+                    className="text-white text-medium font-medium hover:text-[#2ecc71] transition  ease-in-out"
                   >
                     {item.name}
                   </Link>
