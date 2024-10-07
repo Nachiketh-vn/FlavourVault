@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -10,8 +10,6 @@ import {
   Divider,
   Link,
 } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import { useRouter } from "next/navigation";
@@ -42,6 +40,10 @@ const RegisterForm = () => {
         body: JSON.stringify({ email }),
       });
 
+      if (!resUserExists.ok) {
+        throw new Error("Failed to check user existence");
+      }
+
       const { user } = await resUserExists.json();
 
       if (user) {
@@ -58,22 +60,31 @@ const RegisterForm = () => {
           name,
           email,
           password,
-          contact_number :number,
+          contact_number: number,
         }),
       });
 
       if (res.ok) {
-        const form = e.target as HTMLFormElement; // Type-casting form target
-        form.reset();
+        // Reset form fields
+        setName("");
+        setEmail("");
+        setPassword("");
+        setNumber("");
         router.push("/login");
       } else {
         console.log("User registration failed.");
+        setError("Registration failed. Please try again.");
       }
     } catch (error) {
       console.log("Error during registration: ", error);
+      setError("An error occurred. Please try again.");
     }
   };
 
+  // Debugging rendering
+  useEffect(() => {
+    console.log("RegisterForm rendered");
+  }, []);
 
   return (
     <div>
@@ -83,9 +94,10 @@ const RegisterForm = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "80vh", // Full page height for centering
+          minHeight: "100vh", // Ensure it covers full height
           bgcolor: "black", // Premium black background
-          p: { xs: 2, md: 5 }, // Responsive padding
+          p: { xs: 2, md: 5 },
+          mt:-6, // Responsive padding
         }}
       >
         <Box
@@ -191,56 +203,16 @@ const RegisterForm = () => {
               </Button>
 
               <Link
-                href="#"
+                href="/login" // Link to the login page
                 underline="hover"
                 align="center"
-                className="text-slate-300"
                 sx={{ color: "#E0E0E0" }}
               >
                 Already have an account?{" "}
                 <span className="text-white">Login</span>
               </Link>
 
-              <Divider
-                className="text-black font-bold"
-                sx={{ bgcolor: "#fff" }}
-              >
-                OR
-              </Divider>
-
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<GoogleIcon />}
-                onClick={() => console.log("Google Sign-In")}
-                sx={{
-                  color: "#E0E0E0", // Premium off-white text
-                  borderColor: "#E0E0E0", // Softer border
-                  "&:hover": {
-                    borderColor: "#388E3C", // Orange border on hover
-                    color: "#388E3C", // Orange text on hover
-                  },
-                }}
-              >
-                Sign in with Google
-              </Button>
-
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<FacebookIcon />}
-                onClick={() => console.log("Facebook Sign-In")}
-                sx={{
-                  color: "#E0E0E0", // Premium off-white text
-                  borderColor: "#E0E0E0", // Softer border
-                  "&:hover": {
-                    borderColor: "#388E3C", // Orange border on hover
-                    color: "#388E3C", // Orange text on hover
-                  },
-                }}
-              >
-                Sign in with Facebook
-              </Button>
+             
             </Stack>
           </form>
         </Box>

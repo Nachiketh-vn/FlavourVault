@@ -13,7 +13,6 @@ import {
   Divider,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import Navbar from "./navbar";
 import Footer from "./footer";
 import { signIn } from "next-auth/react";
@@ -158,7 +157,7 @@ const SignIn: React.FC = () => {
                 variant="outlined"
                 fullWidth
                 startIcon={<GoogleIcon />}
-                onClick={() => console.log("Google Sign-In")}
+                onClick={() => signIn("google")}
                 sx={{
                   color: "#E0E0E0", // Premium off-white text
                   borderColor: "#E0E0E0", // Softer border
@@ -171,22 +170,7 @@ const SignIn: React.FC = () => {
                 Sign in with Google
               </Button>
 
-              <Button
-                variant="outlined"
-                fullWidth
-                startIcon={<FacebookIcon />}
-                onClick={() => console.log("Facebook Sign-In")}
-                sx={{
-                  color: "#E0E0E0", // Premium off-white text
-                  borderColor: "#E0E0E0", // Softer border
-                  "&:hover": {
-                    borderColor: "#388E3C", // Orange border on hover
-                    color: "#388E3C", // Orange text on hover
-                  },
-                }}
-              >
-                Sign in with Facebook
-              </Button>
+              
             </Stack>
           </form>
         </Box>

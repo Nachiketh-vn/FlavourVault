@@ -7,8 +7,10 @@ import { CardHoverEffectDemo } from "@/components/features";
 import { InfiniteMovingCardsDemo } from "@/components/reviews";
 import { TextGenerateEffectDemo } from "@/components/description";
 import Footer from "@/components/footer";
+import { useSession } from "next-auth/react";
 
 export default function BackgroundBeamsDemo() {
+  const { data: session } = useSession();
   return (
     <div className="text-white">
       <Navbar />
@@ -25,14 +27,25 @@ export default function BackgroundBeamsDemo() {
             <TextGenerateEffectDemo />
           </div>
           <div>
-            <Link href={""}>
-              <button className="relative inline-flex h-12 mt-4 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 hover:scale-105 transition ease-in focus:ring-offset-2 focus:ring-offset-slate-50">
-                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
-                <span className="inline-flex px-8 py-4 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
-                  Get Started
-                </span>
-              </button>
-            </Link>
+            {session ? (
+              <Link href={"/addResturant"}>
+                <button className="relative inline-flex h-12 mt-4 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 hover:scale-105 transition ease-in focus:ring-offset-2 focus:ring-offset-slate-50">
+                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
+                  <span className="inline-flex px-8 py-4 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
+                    Get Started
+                  </span>
+                </button>
+              </Link>
+            ) : (
+              <Link href={"/login"}>
+                <button className="relative inline-flex h-12 mt-4 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 hover:scale-105 transition ease-in focus:ring-offset-2 focus:ring-offset-slate-50">
+                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
+                  <span className="inline-flex px-8 py-4 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
+                    Login To Get Started
+                  </span>
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>

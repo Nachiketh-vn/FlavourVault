@@ -1,9 +1,9 @@
 "use client";
-import { useState, useMemo, useCallback } from "react";
+import React, { useState, useMemo, useCallback } from "react";
 import Link from "next/link"; // Use Link from next/link
 import { signOut, useSession } from "next-auth/react";
 
-function Navbar() {
+const Navbar = React.memo(function Navbar() {
   const { data: session } = useSession(); // Check for the user's session
   const [isOpen, setIsOpen] = useState(false);
 
@@ -97,6 +97,7 @@ function Navbar() {
           </div>
         </div>
       </div>
+
       {/* Mobile Drawer Menu */}
       <div
         className={`fixed top-0 right-0 w-64 h-full bg-black shadow-lg z-[200] transform transition-transform duration-300 ease-in-out ${
@@ -167,6 +168,6 @@ function Navbar() {
       </div>
     </nav>
   );
-}
+});
 
 export default Navbar;
