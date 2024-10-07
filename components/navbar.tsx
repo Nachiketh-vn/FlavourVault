@@ -1,8 +1,10 @@
 "use client";
 import { useState, useMemo, useCallback } from "react";
 import Link from "next/link"; // Use Link from next/link
+import { signOut, useSession } from "next-auth/react";
 
 function Navbar() {
+  const { data: session } = useSession(); // Check for the user's session
   const [isOpen, setIsOpen] = useState(false);
 
   const menuItems = useMemo(
@@ -15,16 +17,12 @@ function Navbar() {
     []
   );
 
-  const loginLink = useMemo(() => ({ name: "Login", href: "/login" }), []);
-
   const toggleMenu = useCallback(() => {
     setIsOpen((prevState) => !prevState);
   }, []);
 
   return (
     <nav className="w-full z-[100] relative md:static">
-      {" "}
-      {/* Ensure navbar is above other components */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-2 lg:py-2">
         <div className="flex justify-between h-16 items-center">
           {/* Logo Section */}
@@ -41,21 +39,35 @@ function Navbar() {
                 <li key={index}>
                   <Link
                     href={item.href}
-                    className="text-white text-medium font-medium hover:text-[#2ecc71] transition  ease-in-out"
+                    className="text-white text-medium font-medium hover:text-[#2ecc71] transition ease-in-out"
                   >
                     {item.name}
                   </Link>
                 </li>
               ))}
             </ul>
-            <Link href={loginLink.href}>
-              <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+            {session ? (
+              // If session exists, show Logout button
+              <button
+                onClick={() => signOut()}
+                className="relative inline-flex h-12 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+              >
                 <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
                 <span className="inline-flex px-4 py-2 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
-                  {loginLink.name}
+                  Logout
                 </span>
               </button>
-            </Link>
+            ) : (
+              // If no session, show Login button
+              <Link href="/login">
+                <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                  <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
+                  <span className="inline-flex px-4 py-2 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
+                    Login
+                  </span>
+                </button>
+              </Link>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,14 +139,28 @@ function Navbar() {
               ))}
             </ul>
             <div className="mt-8 text-center">
-              <Link href={loginLink.href}>
-                <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+              {session ? (
+                // If session exists, show Logout button
+                <button
+                  onClick={() => signOut()}
+                  className="relative inline-flex h-12 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
+                >
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
                   <span className="inline-flex px-4 py-2 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
-                    {loginLink.name}
+                    Logout
                   </span>
                 </button>
-              </Link>
+              ) : (
+                // If no session, show Login button
+                <Link href="/login">
+                  <button className="relative inline-flex h-12 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+                    <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
+                    <span className="inline-flex px-4 py-2 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
+                      Login
+                    </span>
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
