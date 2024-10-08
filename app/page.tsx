@@ -28,7 +28,7 @@ export default function BackgroundBeamsDemo() {
           </div>
           <div>
             {session ? (
-              <Link href={"/addResturant"}>
+              <Link href={"/addRestaurant"}>
                 <button className="relative inline-flex h-12 mt-4 overflow-hidden rounded-full p-[1.5px] focus:outline-none focus:ring-2 focus:ring-slate-400 hover:scale-105 transition ease-in focus:ring-offset-2 focus:ring-offset-slate-50">
                   <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#00FF7F_0%,#008080_50%,#40E0D0_100%)]" />
                   <span className="inline-flex px-8 py-4 h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 text-medium font-medium text-white backdrop-blur-3xl">
