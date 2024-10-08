@@ -7,6 +7,7 @@ import { IoMdAdd } from "react-icons/io";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
 import { FaHotel } from "react-icons/fa";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Restaurant {
   _id: string;
@@ -69,20 +70,30 @@ const Page: React.FC = () => {
       <Navbar />
       <BackgroundBeams />
       <div className="text-white flex justify-center py-4">
-        <h1 className="text-2xl">
+        <h1 className="text-2xl flex items-center">
           Welcome{" "}
-          <span className="text-emerald-600 font-semibold">
-            {session?.user?.name}
-          </span>
+          {session?.user?.name ? (
+            <span className="text-emerald-600 font-semibold ml-2">
+              {session.user.name}
+            </span>
+          ) : (
+            <Skeleton className="h-6 w-24 bg-gray-500 inline-block ml-2 rounded" />
+          )}
         </h1>
       </div>
+
       <div className="mx-4 sm:mx-8 lg:mx-16">
-        <h2 className="text-xl text-white mb-4">Manage Your Restaurants</h2>
+        <h2 className="text-xl font-md text-white mb-4">Manage Your Restaurants</h2>
         <div className="flex flex-wrap items-center gap-4">
           {loading ? (
-            <p className="text-gray-400">Loading restaurants...</p>
+            <div className="flex flex-col items-center mt-4 w-40">
+              <Skeleton className="h-20 w-20 rounded-lg bg-gray-500" />
+              <div className="space-y-2 mt-2">
+                <Skeleton className="h-4 w-32 bg-gray-500" />
+              </div>
+            </div>
           ) : error ? (
-            <p className="text-red-400">{error}</p>
+            <p className="text-red-400">Sorry, is a Error</p>
           ) : (
             <div className="mt-4 flex flex-wrap gap-4">
               {restaurants.length > 0 ? (
@@ -103,7 +114,7 @@ const Page: React.FC = () => {
                   </Link>
                 ))
               ) : (
-                <p className="text-emerald-600">No restaurants found. Add One!</p>
+                <p></p>
               )}
             </div>
           )}
