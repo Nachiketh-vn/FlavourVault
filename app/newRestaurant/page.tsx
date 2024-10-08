@@ -3,6 +3,9 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 // Define the shape of the restaurant details state
 interface RestaurantDetails {
@@ -41,10 +44,46 @@ const RestaurantForm: React.FC = () => {
   };
 
   // Function to handle form submission
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(restaurantDetails); // Can be sent to the backend here
+
+    // Check if user is authenticated
+    if (!uemail) {
+      alert("Please log in to register your restaurant.");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/restaurant", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...restaurantDetails,
+          userEmail: uemail, // Add user email to the payload
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        toast.success("Successfully created!"); // Show success message
+        router.push("/userRestaurant"); // Redirect to the home page after successful registration
+      } else {
+        const errorData = await response.json();
+        toast.error("An error Occurred");;
+      }
+    } catch (error) {
+      toast.error("An error occurred while submitting the form.");
+    }
   };
+
+
+  // Check if the user is authenticated to access the form
+  const {data:session}=useSession();
+  const uemail=session?.user?.email;
+
+  const router=useRouter();
 
   return (
     <div className="min-h-screen text-white">

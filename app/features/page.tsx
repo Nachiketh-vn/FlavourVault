@@ -67,7 +67,7 @@ const FeaturePage = () => {
       <BackgroundBeams />
       <section className="px-6 py-12 lg:px-24">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-semibold text-center mb-12">
+          <h2 className="text-4xl -mt-6 text-center md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-700 to-emerald-900 mb-8">
             Premium Features of Our QR Menu App
           </h2>
           <div className="space-y-12">

@@ -8,23 +8,22 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
 import { FaHotel } from "react-icons/fa";
 
-// Define the Restaurant interface for better type checking
 interface Restaurant {
-  _id: string; // Assuming _id is a string
+  _id: string;
   restaurantName: string;
 }
 
 const Page: React.FC = () => {
-  const { data: session, status } = useSession();
-  const Uemail = session?.user?.email || ""; // Ensure Uemail is a string
-  const [restaurants, setRestaurants] = useState<Restaurant[]>([]); // State to manage restaurants
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [error, setError] = useState<string>(""); // State to manage error messages
+  const { data: session } = useSession();
+  const Uemail = session?.user?.email || "";
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
 
   useEffect(() => {
     const fetchRestaurants = async () => {
-      setLoading(true); // Start loading
-      setError(""); // Reset error state
+      setLoading(true);
+      setError("");
 
       if (Uemail) {
         try {
@@ -43,12 +42,11 @@ const Page: React.FC = () => {
             }
           }
 
-          const data: Restaurant[] = await response.json(); // Ensure data is typed
+          const data: Restaurant[] = await response.json();
           setRestaurants(data);
         } catch (err) {
           console.error(err);
 
-          // Type guard to check if err is an instance of Error
           const errorMessage =
             err instanceof Error
               ? err.message
@@ -60,7 +58,7 @@ const Page: React.FC = () => {
         }
       }
 
-      setLoading(false); // End loading
+      setLoading(false);
     };
 
     fetchRestaurants();
@@ -78,52 +76,55 @@ const Page: React.FC = () => {
           </span>
         </h1>
       </div>
-      <div className="mx-[4rem]">
-        <h2 className="text-xl text-white">Manage Your Restaurants</h2>
-        <div className="flex flex-row items-center">
-          {/* Display loading state or error message */}
+      <div className="mx-4 sm:mx-8 lg:mx-16">
+        <h2 className="text-xl text-white mb-4">Manage Your Restaurants</h2>
+        <div className="flex flex-wrap items-center gap-4">
           {loading ? (
             <p className="text-gray-400">Loading restaurants...</p>
           ) : error ? (
             <p className="text-red-400">{error}</p>
           ) : (
-            <div className="mt-4">
+            <div className="mt-4 flex flex-wrap gap-4">
               {restaurants.length > 0 ? (
                 restaurants.map((restaurant) => (
-                  <Link key={restaurant._id} href={"/newRestaurant"}>
-                    <div className="flex flex-col px-6 items-start space-y-2">
-                      <div className="flex flex-col items-center cursor-pointer">
-                        <div className="h-20 hover:scale-105 transition ease-in w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center">
-                          <FaHotel className="text-gray-300 text-5xl" />
-                        </div>
-                        <p className="text-md font-semibold w-40 text-center text-gray-100 mt-2">
-                          {restaurant.restaurantName}
-                        </p>
+                  <Link
+                    key={restaurant._id}
+                    href={`/userRestaurant/${restaurant._id}`}
+                    className="flex flex-col items-center w-40"
+                  >
+                    <div className="flex flex-col items-center cursor-pointer">
+                      <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
+                        <FaHotel className="text-gray-300 text-5xl" />
                       </div>
+                      <p className="text-md font-semibold text-center text-gray-100 mt-2">
+                        {restaurant.restaurantName}
+                      </p>
                     </div>
                   </Link>
                 ))
               ) : (
-                <p className="text-gray-400">No restaurants found. Add One!</p>
+                <p className="text-emerald-600">No restaurants found. Add One!</p>
               )}
             </div>
           )}
-          <Link href={"/newRestaurant"}>
-            <div className="flex flex-col px-6 items-start space-y-2 mt-4">
-              <div className="flex flex-col items-center cursor-pointer">
-                <div className="h-20 hover:scale-105 transition ease-in w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center">
-                  <IoMdAdd className="text-gray-300 text-5xl" />
-                </div>
-                <p className="text-md font-semibold w-40 text-center text-gray-100 mt-2">
-                  Add Restaurant
-                </p>
+          <Link
+            href="/newRestaurant"
+            className="flex flex-col items-center w-40 mt-4"
+          >
+            <div className="flex flex-col items-center cursor-pointer">
+              <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
+                <IoMdAdd className="text-gray-300 text-5xl" />
               </div>
+              <p className="text-md font-semibold text-center text-gray-100 mt-2">
+                Add Restaurant
+              </p>
             </div>
           </Link>
         </div>
       </div>
+
       <section className="max-w-7xl mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold text-gray-900 text-center mb-8">
+        <h1 className="text-3xl font-bold text-gray-300 text-center my-8">
           Steps to Register a Restaurant
         </h1>
 
@@ -149,9 +150,12 @@ const Page: React.FC = () => {
             </p>
             <ul className="list-disc list-inside text-gray-700 mt-4 space-y-2">
               <li>Restaurant Name</li>
+              <li>Restaurant Owner</li>
+              <li>City</li>
+              <li>Restaurant Contact Number</li>
+              <li>Owner Contact Number</li>
+              <li>Restaurant Email</li>
               <li>Address</li>
-              <li>Cuisine Type</li>
-              <li>Contact Number</li>
             </ul>
           </div>
 
