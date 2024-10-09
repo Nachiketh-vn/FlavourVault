@@ -6,22 +6,25 @@ const dishSchema = new Schema({
   description: { type: String, required: true },
   prices: [
     {
-      quantity: { type: String, required: true },
-      price: { type: Number, required: true, min: 0 },
-      serves: { type: Number, required: true, min: 1 },
+      quantity: { type: String, required: true }, // e.g., "Small", "Medium", "Large"
+      price: { type: Number, required: true, min: 0 }, // Price for the quantity
+      serves: { type: Number, required: true, min: 1 }, // Number of people it serves
     },
   ],
   image: { type: String, default: "" }, // Optional image field
-  inStock: { type: Boolean, required: true, default: true }, // Availability flag updated from 'available'
+  inStock: { type: Boolean, default: true }, // Availability status
+  bestSeller: { type: Boolean, default: false }, // If the dish is a best-seller
+  todaysSpecial: { type: Boolean, default: false }, // Flag for today's special
+  mustTry: { type: Boolean, default: false }, // Flag for recommended dishes
 });
 
 // Define the section (segment) schema
 const sectionSchema = new Schema({
-  name: { type: String, required: true }, // Updated to match your submission structure
+  sectionName: { type: String, required: true },
   dishes: [dishSchema],
 });
 
-// Define the menu schema, referencing the restaurant
+// Define the menu schema, referencing the restaurant by ID
 const menuSchema = new Schema(
   {
     restaurantId: {
@@ -29,7 +32,7 @@ const menuSchema = new Schema(
       required: true,
       ref: "Restaurant",
     },
-    segments: [sectionSchema], // Updated to match your submission structure
+    sections: [sectionSchema],
   },
   { timestamps: true } // Automatically adds `createdAt` and `updatedAt` fields
 );

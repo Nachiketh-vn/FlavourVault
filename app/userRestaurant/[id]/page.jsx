@@ -1,65 +1,73 @@
-"use client";
-import { useEffect, useState } from "react";
-import Navbar from "@/components/navbar";
-import Footer from "@/components/footer";
+"use client"
+import { useState } from "react";
+import Link from "next/link";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
-  const { id: restaurantId } = params;
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-
-
-
+  const { id } = params;
+  const restaurantId = id; // Changed to restaurant ID
   const [segments, setSegments] = useState([
     {
-      name: "",
-      menus: [
+      sectionName: "",
+      dishes: [
         {
-          name: "",
-          prices: [{ quantity: "", price: "", serves: "" }],
+          dishName: "",
           description: "",
-          image: "",
-          inStock: false, // Added stock status
+          prices: [{ quantity: "", price: "", serves: "" }],
+          image: "", // Image URL
+          inStock: true,
+          bestSeller: false,
+          todaysSpecial: false,
+          mustTry: false,
         },
       ],
     },
   ]);
 
+  // State to track limits
+  const [bestsellerCount, setBestsellerCount] = useState(15);
+  const [todaySpecialCount, setTodaySpecialCount] = useState(5);
+  const [mustTryCount, setMustTryCount] = useState(15);
+
   const addSegment = () => {
     setSegments([
       ...segments,
       {
-        name: "",
-        menus: [
+        sectionName: "",
+        dishes: [
           {
-            name: "",
-            prices: [{ quantity: "", price: "", serves: "" }],
+            dishName: "",
             description: "",
-            image: "",
-            inStock: false, // Added stock status
+            prices: [{ quantity: "", price: "", serves: "" }],
+            image: "", // Image URL
+            inStock: true,
+            bestSeller: false,
+            todaysSpecial: false,
+            mustTry: false,
           },
         ],
       },
     ]);
   };
 
-  const addMenu = (segmentIndex) => {
+  const addDish = (segmentIndex) => {
     const updatedSegments = [...segments];
-    updatedSegments[segmentIndex].menus.push({
-      name: "",
-      prices: [{ quantity: "", price: "", serves: "" }],
+    updatedSegments[segmentIndex].dishes.push({
+      dishName: "",
       description: "",
-      image: "",
-      inStock: false, // Added stock status
+      prices: [{ quantity: "", price: "", serves: "" }],
+      image: "", // Image URL
+      inStock: true,
+      bestSeller: false,
+      todaysSpecial: false,
+      mustTry: false,
     });
     setSegments(updatedSegments);
   };
 
-  const addPrice = (segmentIndex, menuIndex) => {
+  const addPriceOption = (segmentIndex, dishIndex) => {
     const updatedSegments = [...segments];
-    updatedSegments[segmentIndex].menus[menuIndex].prices.push({
+    updatedSegments[segmentIndex].dishes[dishIndex].prices.push({
       quantity: "",
       price: "",
       serves: "",
@@ -67,297 +75,323 @@ export default function Page({ params }) {
     setSegments(updatedSegments);
   };
 
-  const deleteSegment = (index) => {
-    const updatedSegments = segments.filter((_, i) => i !== index);
-    setSegments(updatedSegments);
-  };
-
-  const deleteMenu = (segmentIndex, menuIndex) => {
+  const handleChange = (e, segmentIndex, dishIndex, field) => {
     const updatedSegments = [...segments];
-    updatedSegments[segmentIndex].menus.splice(menuIndex, 1);
-    setSegments(updatedSegments);
-  };
+    const isChecked = e.target.checked;
 
-  const deletePrice = (segmentIndex, menuIndex, priceIndex) => {
-    const updatedSegments = [...segments];
-    updatedSegments[segmentIndex].menus[menuIndex].prices.splice(priceIndex, 1);
-    setSegments(updatedSegments);
-  };
-
-    useEffect(() => {
-      const checkMenu = async () => {
-        try {
-          const response = await fetch(
-            `/api/menu?restaurantId=${restaurantId}`
-          );
-          const data = await response.json();
-
-          if (response.ok && data) {
-            // If menu exists, redirect to another page
-            router.push(`/user/menu/${restaurantId}`);
-          } else {
-            // If no menu exists, let the user continue on the current page
-            setLoading(false); // Stop loading
-          }
-        } catch (error) {
-          console.error("Error checking menu:", error);
-          setLoading(false); // Stop loading even if there's an error
-        }
-      };
-
-      checkMenu();
-    }, [router, restaurantId]);
-
-    if (loading) {
-      return <div>Loading...</div>; // Show a loading spinner or message
+    if (field === "bestSeller") {
+      if (isChecked && bestsellerCount > 0) {
+        setBestsellerCount(bestsellerCount - 1);
+      } else if (!isChecked) {
+        setBestsellerCount(bestsellerCount + 1);
+      } else {
+        alert("Best Seller limit reached");
+        return; // Prevent state change if limit is reached
+      }
     }
 
+    if (field === "todaysSpecial") {
+      if (isChecked && todaySpecialCount > 0) {
+        setTodaySpecialCount(todaySpecialCount - 1);
+      } else if (!isChecked) {
+        setTodaySpecialCount(todaySpecialCount + 1);
+      } else {
+        alert("Today's Special limit reached");
+        return; // Prevent state change if limit is reached
+      }
+    }
+
+    if (field === "mustTry") {
+      if (isChecked && mustTryCount > 0) {
+        setMustTryCount(mustTryCount - 1);
+      } else if (!isChecked) {
+        setMustTryCount(mustTryCount + 1);
+      } else {
+        alert("Must Try limit reached");
+        return; // Prevent state change if limit is reached
+      }}
+
+    updatedSegments[segmentIndex].dishes[dishIndex][field] = isChecked;
+    setSegments(updatedSegments);
+  };
+
+  const handleDeleteSegment = (segmentIndex) => {
+    if (segments.length > 1) {
+      const updatedSegments = [...segments];
+      updatedSegments.splice(segmentIndex, 1);
+      setSegments(updatedSegments);
+    } else {
+      alert("Cannot delete the last segment!");
+    }
+  };
+
+  const handleDeleteDish = (segmentIndex, dishIndex) => {
+    if (segments[segmentIndex].dishes.length > 1) {
+      const updatedSegments = [...segments];
+      updatedSegments[segmentIndex].dishes.splice(dishIndex, 1);
+      setSegments(updatedSegments);
+    } else {
+      alert("Cannot delete the last dish in a segment!");
+    }
+  };
+
+  const handleDeletePriceOption = (segmentIndex, dishIndex, priceIndex) => {
+    if (segments[segmentIndex].dishes[dishIndex].prices.length > 1) {
+      const updatedSegments = [...segments];
+      updatedSegments[segmentIndex].dishes[dishIndex].prices.splice(
+        priceIndex,
+        1
+      );
+      setSegments(updatedSegments);
+    } else {
+      alert("Cannot delete the last price option!");
+    }
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); // Prevent the default form submission behavior
+    const menuData = { restaurantId, sections: segments };
+
     try {
-      const response = await fetch("http://localhost:3000/api/menu", {
+      const response = await fetch("/api/menu", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          restaurantId: restaurantId,
-          segments: segments.map((segment) => ({
-            name: segment.name,
-            dishes: segment.menus.map((menu) => ({
-              dishName: menu.name,
-              prices: menu.prices.map((price) => ({
-                quantity: price.quantity,
-                price: price.price,
-                serves: price.serves,
-              })),
-              description: menu.description,
-              image: menu.image,
-              inStock: menu.inStock, // Include stock status
-            })),
-          })),
-        }),
+        body: JSON.stringify(menuData),
       });
-      const data = await response.json();
-      toast.success("Menu has been created Successfully");
-      console.log(data);
-      router.push(`/user/menu/${restaurantId}`);
-    } catch (err) {
-      console.error(err);
+
+      if (response.ok) {
+        const data = await response.json();
+        toast.success("Menu Created Successfuly"); // Display success message
+        // Optionally reset the form or redirect
+      } else {
+        const errorData = await response.json();
+        alert(`Error: ${errorData.message}`); // Display error message
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred while submitting the form.");
     }
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="bg-black text-gray-200 container mx-auto px-8 py-4 rounded-lg shadow-md">
-        <h2
-          className="text-5xl -mt-6 text-center md:text-5xl font-bold text-transparent text-emerald-900 mb-8"
-          style={{
-            WebkitTextStroke: "1px white",
-            textStroke: "1px white",
-          }}
-        >
-          Add Menu
-        </h2>
-
-        <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
-          {/* Segment and Menu Fields */}
-          {segments.map((segment, segmentIndex) => (
-            <div
-              key={segmentIndex}
-              className="border border-gray-600 p-4 rounded-lg mb-6 bg-neutral-800 relative"
+    <div className="max-w-3xl mx-auto p-6 bg-gray-800 text-white">
+      <h1 className="text-3xl font-bold text-center mb-6">Add Your Menu</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+        {segments.map((segment, segmentIndex) => (
+          <div
+            key={segmentIndex}
+            className="p-4 border border-gray-600 rounded-lg relative"
+          >
+            <input
+              className="p-3 w-full mb-4 border border-gray-600 rounded-lg bg-gray-700"
+              type="text"
+              placeholder="Section Name"
+              value={segment.sectionName}
+              onChange={(e) => {
+                const updatedSegments = [...segments];
+                updatedSegments[segmentIndex].sectionName = e.target.value;
+                setSegments(updatedSegments);
+              }}
+              required
+            />
+            <button
+              className="absolute top-0 right-0 p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+              onClick={() => handleDeleteSegment(segmentIndex)}
             >
-              {segments.length > 1 && (
-                <button
-                  className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
-                  type="button"
-                  onClick={() => deleteSegment(segmentIndex)}
-                >
-                  Delete Segment
-                </button>
-              )}
-              <input
-                className="border border-gray-400 rounded p-2 w-full mb-4 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                type="text"
-                placeholder="Segment Name (eg. Startes, Deserts, etc..)"
-                value={segment.name}
-                onChange={(e) => {
-                  const updatedSegments = [...segments];
-                  updatedSegments[segmentIndex].name = e.target.value;
-                  setSegments(updatedSegments);
-                }}
-                required
-              />
-              {segment.menus.map((menu, menuIndex) => (
-                <div
-                  key={menuIndex}
-                  className="border-t border-gray-600 pt-4 mt-4 relative"
-                >
-                  {segment.menus.length > 1 && (
-                    <button
-                      className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
-                      type="button"
-                      onClick={() => deleteMenu(segmentIndex, menuIndex)}
-                    >
-                      Delete Dish
-                    </button>
-                  )}
-                  {/* Dish Name */}
-                  <input
-                    className="border border-gray-400 rounded p-2 w-full mb-4 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text"
-                    placeholder="Dish Name"
-                    value={menu.name}
-                    onChange={(e) => {
-                      const updatedSegments = [...segments];
-                      updatedSegments[segmentIndex].menus[menuIndex].name =
-                        e.target.value;
-                      setSegments(updatedSegments);
-                    }}
-                    required
-                  />
-
-                  {/* Stock Status */}
-                  <label className="flex items-center mb-4">
+              X
+            </button>
+            {segment.dishes.map((dish, dishIndex) => (
+              <div key={dishIndex} className="mb-4 relative">
+                <input
+                  className="p-2 w-full mb-2 border border-gray-600 rounded-lg bg-gray-700"
+                  type="text"
+                  placeholder="Dish Name"
+                  value={dish.dishName}
+                  onChange={(e) => {
+                    const updatedSegments = [...segments];
+                    updatedSegments[segmentIndex].dishes[dishIndex].dishName =
+                      e.target.value;
+                    setSegments(updatedSegments);
+                  }}
+                  required
+                />
+                <textarea
+                  className="p-2 w-full mb-2 border border-gray-600 rounded-lg bg-gray-700"
+                  placeholder="Description"
+                  value={dish.description}
+                  onChange={(e) => {
+                    const updatedSegments = [...segments];
+                    updatedSegments[segmentIndex].dishes[
+                      dishIndex
+                    ].description = e.target.value;
+                    setSegments(updatedSegments);
+                  }}
+                />
+                <input
+                  className="p-2 w-full mb-2 border border-gray-600 rounded-lg bg-gray-700"
+                  type="text"
+                  placeholder="Image URL"
+                  value={dish.image}
+                  onChange={(e) => {
+                    const updatedSegments = [...segments];
+                    updatedSegments[segmentIndex].dishes[dishIndex].image =
+                      e.target.value;
+                    setSegments(updatedSegments);
+                  }}
+                />
+                {dish.prices.map((priceOption, priceIndex) => (
+                  <div key={priceIndex} className="flex gap-2 mb-2 relative">
                     <input
-                      type="checkbox"
-                      className="border-gray-400 rounded text-white cursor-pointer"
-                      checked={menu.inStock}
+                      className="p-2 border border-gray-600 rounded-lg bg-gray-700"
+                      type="text"
+                      placeholder="Quantity"
+                      value={priceOption.quantity}
                       onChange={(e) => {
                         const updatedSegments = [...segments];
-                        updatedSegments[segmentIndex].menus[menuIndex].inStock =
-                          e.target.checked;
+                        updatedSegments[segmentIndex].dishes[dishIndex].prices[
+                          priceIndex
+                        ].quantity = e.target.value;
                         setSegments(updatedSegments);
                       }}
+                      required
                     />
-                    <span className="ml-2">In Stock</span>
-                  </label>
-
-                  {/* Price Options */}
-                  {menu.prices.map((price, priceIndex) => (
-                    <div
-                      key={priceIndex}
-                      className="grid grid-cols-3 gap-4 mb-4"
+                    <input
+                      className="p-2 border border-gray-600 rounded-lg bg-gray-700"
+                      type="number"
+                      placeholder="Price"
+                      value={priceOption.price}
+                      onChange={(e) => {
+                        const updatedSegments = [...segments];
+                        updatedSegments[segmentIndex].dishes[dishIndex].prices[
+                          priceIndex
+                        ].price = e.target.value;
+                        setSegments(updatedSegments);
+                      }}
+                      required
+                    />
+                    <input
+                      className="p-2 border border-gray-600 rounded-lg bg-gray-700"
+                      type="number"
+                      placeholder="Serves"
+                      value={priceOption.serves}
+                      onChange={(e) => {
+                        const updatedSegments = [...segments];
+                        updatedSegments[segmentIndex].dishes[dishIndex].prices[
+                          priceIndex
+                        ].serves = e.target.value;
+                        setSegments(updatedSegments);
+                      }}
+                      required
+                    />
+                    <button
+                      className="absolute top-0 right-0 p-2 bg-red-500 text-white rounded-full hover:bg-red-600"
+                      onClick={() =>
+                        handleDeletePriceOption(
+                          segmentIndex,
+                          dishIndex,
+                          priceIndex
+                        )
+                      }
                     >
-                      <input
-                        className="border border-gray-400 rounded p-2 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="text"
-                        placeholder="Quantity (eg. Full,Half, etc...)"
-                        value={price.quantity}
-                        onChange={(e) => {
-                          const updatedSegments = [...segments];
-                          updatedSegments[segmentIndex].menus[menuIndex].prices[
-                            priceIndex
-                          ].quantity = e.target.value;
-                          setSegments(updatedSegments);
-                        }}
-                        required
-                      />
-                      <input
-                        className="border border-gray-400 rounded p-2 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="number"
-                        placeholder="Price"
-                        value={price.price}
-                        onChange={(e) => {
-                          const updatedSegments = [...segments];
-                          updatedSegments[segmentIndex].menus[menuIndex].prices[
-                            priceIndex
-                          ].price = e.target.value;
-                          setSegments(updatedSegments);
-                        }}
-                        required
-                      />
-                      <input
-                        className="border border-gray-400 rounded p-2 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        type="text"
-                        placeholder="Serves (eg. 1,2,...)"
-                        value={price.serves}
-                        onChange={(e) => {
-                          const updatedSegments = [...segments];
-                          updatedSegments[segmentIndex].menus[menuIndex].prices[
-                            priceIndex
-                          ].serves = e.target.value;
-                          setSegments(updatedSegments);
-                        }}
-                      />
-                      {menu.prices.length > 1 && (
-                        <button
-                          className="bg-red-600 text-white px-2 py-1 rounded hover:bg-red-700"
-                          type="button"
-                          onClick={() =>
-                            deletePrice(segmentIndex, menuIndex, priceIndex)
-                          }
-                        >
-                          Delete Price
-                        </button>
-                      )}
-                    </div>
-                  ))}
-
-                  {/* Add Price Option */}
-                  <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                    type="button"
-                    onClick={() => addPrice(segmentIndex, menuIndex)}
-                  >
-                    Add New Price Option
-                  </button>
-
-                  {/* Description */}
-                  <textarea
-                    className="border border-gray-400 rounded p-2 w-full my-4 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    placeholder="Description"
-                    value={menu.description}
-                    onChange={(e) => {
-                      const updatedSegments = [...segments];
-                      updatedSegments[segmentIndex].menus[
-                        menuIndex
-                      ].description = e.target.value;
-                      setSegments(updatedSegments);
-                    }}
-                  />
-
-                  {/* Image URL */}
+                      X
+                    </button>
+                  </div>
+                ))}
+                <button
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                  type="button"
+                  onClick={() => addPriceOption(segmentIndex, dishIndex)}
+                >
+                  Add Price Option
+                </button>
+                <div className="flex items-center mb-2">
                   <input
-                    className="border border-gray-400 rounded p-2 w-full mb-4 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    type="text"
-                    placeholder="Image URL (Optional)"
-                    value={menu.image}
-                    onChange={(e) => {
-                      const updatedSegments = [...segments];
-                      updatedSegments[segmentIndex].menus[menuIndex].image =
-                        e.target.value;
-                      setSegments(updatedSegments);
-                    }}
+                    type="checkbox"
+                    checked={dish.inStock}
+                    onChange={(e) =>
+                      handleChange(e, segmentIndex, dishIndex, "inStock")
+                    }
                   />
+                  <label className="ml-2">In Stock</label>
                 </div>
-              ))}
-              <button
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-                type="button"
-                onClick={() => addMenu(segmentIndex)}
-              >
-                Add New Dish
-              </button>
-            </div>
-          ))}
-          <button
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            type="button"
-            onClick={addSegment}
-          >
-            Add New Segment
-          </button>
-          <button
-            className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
-            type="submit"
-          >
-            Submit Menu
-          </button>
-        </form>
-      </div>
-      <Footer />
+                <div className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    checked={dish.bestSeller}
+                    onChange={(e) =>
+                      handleChange(e, segmentIndex, dishIndex, "bestSeller")
+                    }
+                    disabled={bestsellerCount === 0}
+                  />
+                  <label className="ml-2">Best Seller {bestsellerCount}</label>
+                  {bestsellerCount === 0 && (
+                    <span className="text-red-500 ml-2">Limit reached</span>
+                  )}
+                </div>
+                <div className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    checked={dish.todaysSpecial}
+                    onChange={(e) =>
+                      handleChange(e, segmentIndex, dishIndex, "todaysSpecial")
+                    }
+                    disabled={todaySpecialCount === 0}
+                  />
+                  <label className="ml-2">
+                    Today's Special {todaySpecialCount}
+                  </label>
+                  {todaySpecialCount === 0 && (
+                    <span className="text-red-500 ml-2">Limit reached</span>
+                  )}
+                </div>
+                <div className="flex items-center mb-2">
+                  <input
+                    type="checkbox"
+                    checked={dish.mustTry}
+                    onChange={(e) =>
+                      handleChange(e, segmentIndex, dishIndex, "mustTry")
+                    }
+                    disabled={mustTryCount === 0}
+                  />
+                  <label className="ml-2">Must Try {mustTryCount}</label>
+                  {mustTryCount === 0 && (
+                    <span className="text-red-500 ml-2">Limit reached</span>
+                  )}
+                </div>
+                <button
+                  className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
+                  type="button"
+                  onClick={() => handleDeleteDish(segmentIndex, dishIndex)}
+                >
+                  Delete Dish
+                </button>
+              </div>
+            ))}
+            <button
+              className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
+              type="button"
+              onClick={() => addDish(segmentIndex)}
+            >
+              Add Dish
+            </button>
+          </div>
+        ))}
+        <button
+          className="bg-indigo-500 text-white py-2 px-4 rounded hover:bg-indigo-600"
+          type="button"
+          onClick={addSegment}
+        >
+          Add Section
+        </button>
+        <button
+          className="bg-purple-500 text-white py-2 px-4 rounded hover:bg-purple-600 mt-6"
+          type="submit"
+        >
+          Submit Menu
+        </button>
+      </form>
     </div>
   );
 }
