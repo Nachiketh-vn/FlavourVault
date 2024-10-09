@@ -1,10 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }) {
   const { id: restaurantId } = params;
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+
+
+
   const [segments, setSegments] = useState([
     {
       name: "",
@@ -77,6 +84,34 @@ export default function Page({ params }) {
     setSegments(updatedSegments);
   };
 
+    useEffect(() => {
+      const checkMenu = async () => {
+        try {
+          const response = await fetch(
+            `/api/menu?restaurantId=${restaurantId}`
+          );
+          const data = await response.json();
+
+          if (response.ok && data) {
+            // If menu exists, redirect to another page
+            router.push(`/user/menu/${restaurantId}`);
+          } else {
+            // If no menu exists, let the user continue on the current page
+            setLoading(false); // Stop loading
+          }
+        } catch (error) {
+          console.error("Error checking menu:", error);
+          setLoading(false); // Stop loading even if there's an error
+        }
+      };
+
+      checkMenu();
+    }, [router, restaurantId]);
+
+    if (loading) {
+      return <div>Loading...</div>; // Show a loading spinner or message
+    }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -104,7 +139,9 @@ export default function Page({ params }) {
         }),
       });
       const data = await response.json();
+      toast.success("Menu has been created Successfully");
       console.log(data);
+      router.push(`/user/menu/${restaurantId}`);
     } catch (err) {
       console.error(err);
     }
@@ -114,15 +151,22 @@ export default function Page({ params }) {
     <div>
       <Navbar />
       <div className="bg-black text-gray-200 container mx-auto px-8 py-4 rounded-lg shadow-md">
-        <h2 className="text-4xl -mt-6 text-center md:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-emerald-700 to-emerald-900 mb-8">
+        <h2
+          className="text-5xl -mt-6 text-center md:text-5xl font-bold text-transparent text-emerald-900 mb-8"
+          style={{
+            WebkitTextStroke: "1px white",
+            textStroke: "1px white",
+          }}
+        >
           Add Menu
         </h2>
+
         <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           {/* Segment and Menu Fields */}
           {segments.map((segment, segmentIndex) => (
             <div
               key={segmentIndex}
-              className="border border-gray-600 p-4 rounded-lg mb-6 bg-gray-800 relative"
+              className="border border-gray-600 p-4 rounded-lg mb-6 bg-neutral-800 relative"
             >
               {segments.length > 1 && (
                 <button
@@ -136,7 +180,7 @@ export default function Page({ params }) {
               <input
                 className="border border-gray-400 rounded p-2 w-full mb-4 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 type="text"
-                placeholder="Segment Name"
+                placeholder="Segment Name (eg. Startes, Deserts, etc..)"
                 value={segment.name}
                 onChange={(e) => {
                   const updatedSegments = [...segments];
@@ -199,7 +243,7 @@ export default function Page({ params }) {
                       <input
                         className="border border-gray-400 rounded p-2 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                         type="text"
-                        placeholder="Quantity"
+                        placeholder="Quantity (eg. Full,Half, etc...)"
                         value={price.quantity}
                         onChange={(e) => {
                           const updatedSegments = [...segments];
@@ -227,7 +271,7 @@ export default function Page({ params }) {
                       <input
                         className="border border-gray-400 rounded p-2 bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                         type="text"
-                        placeholder="Serves"
+                        placeholder="Serves (eg. 1,2,...)"
                         value={price.serves}
                         onChange={(e) => {
                           const updatedSegments = [...segments];

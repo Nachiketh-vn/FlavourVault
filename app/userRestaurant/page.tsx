@@ -93,7 +93,7 @@ const Page: React.FC = () => {
               </div>
             </div>
           ) : error ? (
-            <p className="text-red-400">Sorry, is a Error</p>
+            <p className="text-red-400">Sorry,there is an Error</p>
           ) : (
             <div className="mt-4 flex flex-wrap gap-4">
               {restaurants.length > 0 ? (

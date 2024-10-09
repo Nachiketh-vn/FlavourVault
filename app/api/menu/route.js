@@ -44,3 +44,37 @@ export async function POST(req) {
     );
   }
 }
+
+export async function GET(req) {
+  try {
+    // Connect to MongoDB
+    await connectMongoDB();
+
+    // Extract the restaurantId from the request's query parameters
+    const { searchParams } = new URL(req.url);
+    const restaurantId = searchParams.get("restaurantId");
+
+    if (!restaurantId) {
+      return NextResponse.json(
+        { error: "restaurantId is required" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch the menu for the specified restaurant
+    const menu = await Menu.findOne({ restaurantId });
+
+    if (!menu) {
+      return NextResponse.json({ error: "Menu not found" }, { status: 404 });
+    }
+
+    // Return the menu as a response
+    return NextResponse.json(menu, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching menu:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
