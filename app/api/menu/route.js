@@ -9,6 +9,30 @@ export async function POST(request) {
   return NextResponse.json({ message: "Menu Created" }, { status: 201 });
 }
 
+export async function PATCH(request) {
+  const { restaurantId, sections } = await request.json();
+  await connectMongoDB();
+
+  try {
+    const updatedMenu = await Menu.findOneAndUpdate(
+      { restaurantId },
+      { sections },
+      { new: true }
+    );
+
+    if (!updatedMenu) {
+      return NextResponse.json({ message: "Menu not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      { message: "Menu updated successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+}
+
 export async function GET(request) {
   const { searchParams } = new URL(request.url);
   const restaurantId = searchParams.get("restaurantId");
