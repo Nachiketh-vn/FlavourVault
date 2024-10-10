@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useEffect, useState } from "react";
 
 // Assuming you are using Next.js dynamic routes like `/menu/[id]`
@@ -59,7 +59,7 @@ function MenuPage({ params }) {
                       </p>
                     ))}
                     <p>
-                      Status: {dish.available ? "Available" : "Out of Stock"}
+                      Status: {dish.inStock ? "Available" : "Out of Stock"}
                     </p>
                   </li>
                 ))}
