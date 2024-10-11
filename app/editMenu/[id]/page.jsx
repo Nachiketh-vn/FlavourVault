@@ -6,6 +6,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 export default function MenuPage({ params }) {
   const { id: restaurantId } = params;
@@ -27,6 +28,7 @@ export default function MenuPage({ params }) {
         if (response.ok) {
           const data = await response.json();
           setMenuData(data);
+          set
           setSegments(data.sections || []); // Initialize sections from fetched data
         } else {
           setError("Menu not found.");
@@ -165,7 +167,6 @@ export default function MenuPage({ params }) {
     setSegments(updatedSegments);
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const menuData = { restaurantId, sections: segments };
@@ -203,6 +204,7 @@ export default function MenuPage({ params }) {
   return (
     <div>
       <Navbar />
+      <BackgroundBeams />
       <div className="max-w-3xl mx-auto p-6 rounded-lg bg-gray-800 text-white">
         <h1 className="text-3xl font-bold text-center mb-6">Edit Menu</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">

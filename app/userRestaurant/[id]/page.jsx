@@ -6,32 +6,35 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
+import { BackgroundBeams } from "@/components/ui/background-beams";
+
 
 export default function Page({ params }) {
   const { id } = params;
   const router = useRouter();
   const restaurantId = id; // Changed to restaurant ID
-  const [menuPresent,setMenuPresent] =useState(false);
+  const [menuPresent, setMenuPresent] = useState(false);
   const [submitCount, setSubmitCount] = useState(0);
+  // State to track limits
+  const [bestsellerCount, setBestsellerCount] = useState(15);
+  const [todaySpecialCount, setTodaySpecialCount] = useState(5);
+  const [mustTryCount, setMustTryCount] = useState(15);
 
-    useEffect(() => {
-      async function fetchMenuSections() {
-        try {
-          const response = await fetch(
-            `/api/menu?restaurantId=${restaurantId}`
-          );
-          const data = await response.json();
-          if(data.sections){
-            setMenuPresent(true);
-          }
-        } catch (error) {
-          setError(error.message);
+  useEffect(() => {
+    async function fetchMenuSections() {
+      try {
+        const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
+        const data = await response.json();
+        if (data.sections) {
+          setMenuPresent(true);
         }
+      } catch (error) {
+        setError(error.message);
       }
+    }
 
-      fetchMenuSections();
-    }, [submitCount,restaurantId]);
-
+    fetchMenuSections();
+  }, [submitCount, restaurantId]);
 
   const [segments, setSegments] = useState([
     {
@@ -46,15 +49,11 @@ export default function Page({ params }) {
           bestSeller: false,
           todaysSpecial: false,
           mustTry: false,
+
         },
       ],
     },
   ]);
-
-  // State to track limits
-  const [bestsellerCount, setBestsellerCount] = useState(15);
-  const [todaySpecialCount, setTodaySpecialCount] = useState(5);
-  const [mustTryCount, setMustTryCount] = useState(15);
 
   const addSegment = () => {
     setSegments([
@@ -88,6 +87,7 @@ export default function Page({ params }) {
       bestSeller: false,
       todaysSpecial: false,
       mustTry: false,
+      
     });
     setSegments(updatedSegments);
   };
@@ -136,7 +136,8 @@ export default function Page({ params }) {
       } else {
         alert("Must Try limit reached");
         return; // Prevent state change if limit is reached
-      }}
+      }
+    }
 
     updatedSegments[segmentIndex].dishes[dishIndex][field] = isChecked;
     setSegments(updatedSegments);
@@ -177,7 +178,13 @@ export default function Page({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-    const menuData = { restaurantId, sections: segments };
+    const menuData = {
+      restaurantId,
+      sections: segments,
+      totalbs: bestSellerCount,
+      totalts: todaySpecialCount,
+      totalmt: mustTryCount,
+    };
 
     try {
       const response = await fetch("/api/menu", {
@@ -206,7 +213,9 @@ export default function Page({ params }) {
   return (
     <div>
       <Navbar />
-      <div class="bg-black text-white p-6 rounded-lg">
+      <BackgroundBeams />
+
+      <div class=" text-white p-6 rounded-lg">
         <h1 class="text-2xl font-bold mb-4 text-orange-500">
           Important Points To Remember:
         </h1>

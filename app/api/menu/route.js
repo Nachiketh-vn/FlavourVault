@@ -3,9 +3,10 @@ import Menu from "@/models/menu";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
-  const { restaurantId, sections } = await request.json();
+  const { restaurantId, sections, totalbs, totalts, totalmt } =
+    await request.json();
   await connectMongoDB();
-  await Menu.create({ restaurantId, sections });
+  await Menu.create({ restaurantId, sections, totalbs, totalts, totalmt });
   return NextResponse.json({ message: "Menu Created" }, { status: 201 });
 }
 

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import Navbar from "@/components/navbar";
 import Link from "next/link";
@@ -8,9 +8,15 @@ import { InfiniteMovingCardsDemo } from "@/components/reviews";
 import { TextGenerateEffectDemo } from "@/components/description";
 import Footer from "@/components/footer";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function BackgroundBeamsDemo() {
   const { data: session } = useSession();
+  const router = useRouter();
+  useEffect(() => {
+   router.refresh();
+  }, [session]);
+  
   return (
     <div className="text-white">
       <Navbar />

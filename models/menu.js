@@ -33,6 +33,9 @@ const menuSchema = new Schema(
       ref: "Restaurant",
     },
     sections: [sectionSchema],
+    totalbs: { type: Number, required: true },
+    totalts: { type: Number, required: true },
+    totalmt: { type: Number, required: true },
   },
   { timestamps: true } // Automatically adds `createdAt` and `updatedAt` fields
 );
