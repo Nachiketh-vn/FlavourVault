@@ -28,8 +28,10 @@ export default function MenuPage({ params }) {
         if (response.ok) {
           const data = await response.json();
           setMenuData(data);
-          set
-          setSegments(data.sections || []); // Initialize sections from fetched data
+          setSegments(data.sections || []);
+          setBestsellerCount(data.totalbs);
+          setTodaySpecialCount(data.totalts);
+          setMustTryCount(data.totalmt);
         } else {
           setError("Menu not found.");
         }
@@ -169,7 +171,7 @@ export default function MenuPage({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const menuData = { restaurantId, sections: segments };
+    const menuData = { restaurantId, sections: segments,totalbs,totalts,totalmt };
 
     try {
       const response = await fetch("/api/menu", {
@@ -335,7 +337,7 @@ export default function MenuPage({ params }) {
                           handleChange(e, segmentIndex, dishIndex, "bestSeller")
                         }
                       />{" "}
-                      Best Seller
+                      Best Seller {bestsellerCount}
                     </label>
 
                     <label>
@@ -351,7 +353,7 @@ export default function MenuPage({ params }) {
                           )
                         }
                       />{" "}
-                      Today's Special
+                      Today's Special {todaySpecialCount}
                     </label>
 
                     <label>
@@ -362,7 +364,7 @@ export default function MenuPage({ params }) {
                           handleChange(e, segmentIndex, dishIndex, "mustTry")
                         }
                       />{" "}
-                      Must Try
+                      Must Try {mustTryCount}
                     </label>
                   </div>
 

@@ -181,7 +181,7 @@ export default function Page({ params }) {
     const menuData = {
       restaurantId,
       sections: segments,
-      totalbs: bestSellerCount,
+      totalbs: bestsellerCount,
       totalts: todaySpecialCount,
       totalmt: mustTryCount,
     };

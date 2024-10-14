@@ -11,13 +11,17 @@ export async function POST(request) {
 }
 
 export async function PATCH(request) {
-  const { restaurantId, sections } = await request.json();
+  const { restaurantId, sections, totalbs, totalts, totalmt } =
+    await request.json();
   await connectMongoDB();
 
   try {
     const updatedMenu = await Menu.findOneAndUpdate(
       { restaurantId },
       { sections },
+      { totalbs },
+      { totalts },
+      { totalmt },
       { new: true }
     );
 
@@ -53,7 +57,13 @@ export async function GET(request) {
       return NextResponse.json({ message: "Menu not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ sections: menu.sections }, { status: 200 });
+    return NextResponse.json(
+      { sections: menu.sections,  totalbs: menu.totalbs ,
+       totalts: menu.totalts ,
+       totalmt: menu.toatlmt },
+    
+      { status: 200 }
+    );
   } catch (error) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
