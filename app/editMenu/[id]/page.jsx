@@ -183,7 +183,6 @@ export default function MenuPage({ params }) {
 
       if (response.ok) {
         toast.success("Menu Updated Successfully");
-        setSubmitCount(submitCount + 1);
       } else {
         const errorData = await response.json();
         toast.error(`Error: ${errorData.message}`);
@@ -245,6 +244,16 @@ export default function MenuPage({ params }) {
                       handleChange(e, segmentIndex, dishIndex, "description")
                     }
                     placeholder="Dish Description"
+                    className="w-full mb-2 p-2 rounded"
+                  />
+
+                  <input
+                    type="text"
+                    value={dish.image}
+                    onChange={(e) =>
+                      handleChange(e, segmentIndex, dishIndex, "image")
+                    }
+                    placeholder="Image Url"
                     className="w-full mb-2 p-2 rounded"
                   />
 

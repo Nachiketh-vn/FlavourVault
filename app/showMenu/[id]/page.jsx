@@ -1,5 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { GiKnifeFork } from "react-icons/gi";
+import { FaBookmark } from "react-icons/fa6";
+import { CiBookmark } from "react-icons/ci";
 
 function Page({ params }) {
   const { id: restaurantId } = params;
@@ -63,15 +67,41 @@ function Page({ params }) {
       minPrice === maxPrice ? `₹${minPrice}` : `₹${minPrice} - ₹${maxPrice}`;
 
     return (
-      <div key={dish._id.$oid} className="p-4 min-w-[200px]">
-        <h3 className="text-lg font-bold mb-2">{dish.dishName}</h3>
-        <p className="text-orange-500 font-semibold">{displayPrice}</p>
+      <div
+        key={dish._id.$oid}
+        className=" p-2  border-[1.5px] border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
+      >
+        {dish.image ? (
+          <div className="flex justify-center">
+            <Image
+              src={dish.image}
+              alt={dish.dishName}
+              width={100}
+              height={100}
+              className="object-cover rounded-md w-32 h-24"
+            />
+          </div>
+        ) : (
+          <GiKnifeFork className="w-28 h-24" />
+        )}
+        <div className="flex  flex-col px-1">
+          <h3 className="text-balance mt-2 text-gray-700 font-medium">
+            {dish.dishName}
+          </h3>
+          <div className="flex justify-between">
+            <p className="text-gray-900 font-bold">{displayPrice}</p>
+            <div className="relative flex top-1 pr-4">
+              <FaBookmark className="absolute text-gray-200 scale-125" />
+              <CiBookmark className="absolute text-gray-500 scale-150 stroke-[1.01]" />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
 
   return (
-    <div className="container bg-white mx-auto p-4">
+    <div className="container bg-gray-50 mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">
         {menuData?.restaurantName || "Restaurant Menu"}
       </h1>
@@ -80,7 +110,7 @@ function Page({ params }) {
       {bestSellers.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
-          <div className="flex overflow-x-auto space-x-4 custom-scroll">
+          <div className="flex overflow-x-auto space-x-2 custom-scroll">
             {bestSellers.map(renderDishCard)}
           </div>
         </div>
@@ -90,7 +120,7 @@ function Page({ params }) {
       {mustTry.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Must Try</h2>
-          <div className="flex overflow-x-auto space-x-4 custom-scroll">
+          <div className="flex overflow-x-auto space-x-2 custom-scroll">
             {mustTry.map(renderDishCard)}
           </div>
         </div>
@@ -100,7 +130,7 @@ function Page({ params }) {
       {todaysSpecial.length > 0 && (
         <div className="mb-8">
           <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
-          <div className="flex overflow-x-auto space-x-4 custom-scroll">
+          <div className="flex overflow-x-auto space-x-2 custom-scroll">
             {todaysSpecial.map(renderDishCard)}
           </div>
         </div>
@@ -110,7 +140,7 @@ function Page({ params }) {
       {segments.map((segment, segmentIndex) => (
         <div key={segmentIndex} className="mb-8">
           <h2 className="text-xl font-semibold mb-4">{segment.sectionName}</h2>
-          <div className="flex overflow-x-auto space-x-4 custom-scroll">
+          <div className="flex overflow-x-auto space-x-2 custom-scroll">
             {segment.dishes.map(renderDishCard)}
           </div>
         </div>
