@@ -8,14 +8,10 @@ import { InfiniteMovingCardsDemo } from "@/components/reviews";
 import { TextGenerateEffectDemo } from "@/components/description";
 import Footer from "@/components/footer";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 
 export default function BackgroundBeamsDemo() {
   const { data: session } = useSession();
-  const router = useRouter();
-  useEffect(() => {
-   router.refresh();
-  }, [session]);
+
   
   return (
     <div className="text-white">

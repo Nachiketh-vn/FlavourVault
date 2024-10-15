@@ -7,7 +7,7 @@ import Footer from "@/components/footer";
 import { useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import { BackgroundBeams } from "@/components/ui/background-beams";
-
+import { VscPreview } from "react-icons/vsc";
 
 export default function Page({ params }) {
   const { id } = params;
@@ -251,19 +251,34 @@ export default function Page({ params }) {
       </div>
 
       {menuPresent ? (
-        <Link
-          href={`/editMenu/${restaurantId}`}
-          className="flex flex-col items-center w-40"
-        >
-          <div className="flex flex-col items-center cursor-pointer">
-            <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
-              <FaEdit className="text-gray-300 text-5xl" />
+        <div className="flex flex-row gap-4 ">
+          <Link
+            href={`/editMenu/${restaurantId}`}
+            className="flex flex-col items-center w-40"
+          >
+            <div className="flex flex-col items-center cursor-pointer">
+              <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
+                <FaEdit className="text-gray-300 text-5xl" />
+              </div>
+              <p className="text-md font-semibold text-center text-gray-100 mt-2">
+                Edit Menu
+              </p>
             </div>
-            <p className="text-md font-semibold text-center text-gray-100 mt-2">
-              Edit Menu
-            </p>
-          </div>
-        </Link>
+          </Link>
+          <Link
+            href={`/showMenu/${restaurantId}`}
+            className="flex flex-col items-center w-40"
+          >
+            <div className="flex flex-col items-center cursor-pointer">
+              <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
+                <VscPreview  className="text-gray-300 text-5xl" />
+              </div>
+              <p className="text-md font-semibold text-center text-gray-100 mt-2">
+                Show Preview
+              </p>
+            </div>
+          </Link>
+        </div>
       ) : (
         <div className="max-w-3xl mx-auto p-6 rounded-lg bg-gray-800 text-white">
           <h1 className="text-3xl font-bold text-center mb-6">Add Your Menu</h1>

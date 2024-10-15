@@ -14,7 +14,6 @@ export default function MenuPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [segments, setSegments] = useState([]);
-  const [submitCount, setSubmitCount] = useState(0);
   const [bestsellerCount, setBestsellerCount] = useState(15);
   const [todaySpecialCount, setTodaySpecialCount] = useState(5);
   const [mustTryCount, setMustTryCount] = useState(15);
@@ -44,7 +43,7 @@ export default function MenuPage({ params }) {
     };
 
     fetchMenu();
-  }, [restaurantId, submitCount]);
+  }, [restaurantId]);
 
   const addSegment = () => {
     setSegments([
@@ -171,7 +170,7 @@ export default function MenuPage({ params }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const menuData = { restaurantId, sections: segments,totalbs,totalts,totalmt };
+    const menuData = { restaurantId, sections: segments,bestsellerCount,todaySpecialCount,mustTryCount };
 
     try {
       const response = await fetch("/api/menu", {

@@ -60,7 +60,7 @@ export async function GET(request) {
     return NextResponse.json(
       { sections: menu.sections,  totalbs: menu.totalbs ,
        totalts: menu.totalts ,
-       totalmt: menu.toatlmt },
+       totalmt: menu.totalmt },
     
       { status: 200 }
     );
