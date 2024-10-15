@@ -13,6 +13,7 @@ const dishSchema = new Schema({
   ],
   image: { type: String, default: "" }, // Optional image field
   inStock: { type: Boolean, default: true }, // Availability status
+  isVeg: { type: Boolean, default: true },
   bestSeller: { type: Boolean, default: false }, // If the dish is a best-seller
   todaysSpecial: { type: Boolean, default: false }, // Flag for today's special
   mustTry: { type: Boolean, default: false }, // Flag for recommended dishes

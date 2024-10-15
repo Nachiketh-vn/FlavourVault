@@ -4,6 +4,10 @@ import Image from "next/image";
 import { GiKnifeFork } from "react-icons/gi";
 import { FaBookmark } from "react-icons/fa6";
 import { CiBookmark } from "react-icons/ci";
+import Link from "next/link";
+import { IoIosSearch } from "react-icons/io";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 
 function Page({ params }) {
   const { id: restaurantId } = params;
@@ -14,6 +18,7 @@ function Page({ params }) {
   const [bestSellers, setBestSellers] = useState([]);
   const [mustTry, setMustTry] = useState([]);
   const [todaysSpecial, setTodaysSpecial] = useState([]);
+  const [isVegMode, setIsVegMode] = useState(false);
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -69,82 +74,123 @@ function Page({ params }) {
     return (
       <div
         key={dish._id.$oid}
-        className=" p-2  border-[1.5px] border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
+        className=" p-2  border-[1.5px] flex-col border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
       >
-        {dish.image ? (
-          <div className="flex justify-center">
-            <Image
-              src={dish.image}
-              alt={dish.dishName}
-              width={100}
-              height={100}
-              className="object-cover rounded-md w-32 h-24"
-            />
+        <Link href={""}>
+          <div>
+            {dish.image ? (
+              <div className="flex justify-center">
+                <Image
+                  src={dish.image}
+                  alt={dish.dishName}
+                  width={100}
+                  height={100}
+                  className="object-cover rounded-md w-32 h-24"
+                />
+              </div>
+            ) : (
+              <GiKnifeFork className="w-28 h-24" />
+            )}
+            <h3 className="text-balance px-1 mt-2 text-gray-700 font-medium">
+              {dish.dishName}
+            </h3>
           </div>
-        ) : (
-          <GiKnifeFork className="w-28 h-24" />
-        )}
-        <div className="flex  flex-col px-1">
-          <h3 className="text-balance mt-2 text-gray-700 font-medium">
-            {dish.dishName}
-          </h3>
           <div className="flex justify-between">
             <p className="text-gray-900 font-bold">{displayPrice}</p>
-            <div className="relative flex top-1 pr-4">
-              <FaBookmark className="absolute text-gray-200 scale-125" />
-              <CiBookmark className="absolute text-gray-500 scale-150 stroke-[1.01]" />
+            <div className="relative -top-2 flex pr-4">
+              <button>
+                <FaBookmark className="absolute text-gray-200 scale-125" />
+                <CiBookmark className="absolute text-gray-500 scale-150 stroke-[1.01]" />
+              </button>
             </div>
           </div>
-        </div>
+        </Link>
       </div>
     );
   };
 
   return (
-    <div className="container bg-gray-50 mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">
-        {menuData?.restaurantName || "Restaurant Menu"}
-      </h1>
+    <div className="bg-gray-50">
 
-      {/* Best Sellers Section */}
-      {bestSellers.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
-          <div className="flex overflow-x-auto space-x-2 custom-scroll">
-            {bestSellers.map(renderDishCard)}
+      {/* search */}
+      <div className=" flex items-center gap-4 rounded-b-2xl w-full p-4 ">
+        <div className="bg-gray-50 gap-2 p-2 pl-4 h-12 rounded-full border border-gray-400 flex items-center w-full max-w-md">
+          <IoIosSearch className="text-gray-500 text-xl" />
+          <input
+            type="text"
+            placeholder="Search..."
+            className="bg-gray-50 focus:outline-none ml-2 w-full"
+          />
+        </div>
+        <div className="flex flex-col items-center">
+          <Label
+            htmlFor="veg-mode"
+            className="text-gray-700 flex flex-col text-center font-medium mb-1"
+          >
+            <span className="text-lg font-semibold">Veg</span>{" "}
+            <span className="text-[10px] font-light relative"> mode</span>
+          </Label>
+          <div
+            className={`w-12 h-6 flex items-center rounded-full p-1 cursor-pointer transition-colors duration-300 ${
+              isVegMode ? "bg-green-500" : "bg-gray-300"
+            }`}
+            onClick={() => setIsVegMode(!isVegMode)}
+          >
+            <div
+              className={`bg-white w-5 h-5 rounded-full shadow-md transform transition-transform duration-300 ${
+                isVegMode ? "translate-x-6" : "translate-x-0"
+              }`}
+            />
           </div>
         </div>
-      )}
+      </div>
 
-      {/* Must Try Section */}
-      {mustTry.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Must Try</h2>
-          <div className="flex overflow-x-auto space-x-2 custom-scroll">
-            {mustTry.map(renderDishCard)}
-          </div>
-        </div>
-      )}
+      {/* banner */}
+      
 
-      {/* Today's Special Section */}
-      {todaysSpecial.length > 0 && (
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
-          <div className="flex overflow-x-auto space-x-2 custom-scroll">
-            {todaysSpecial.map(renderDishCard)}
+      <div className="container bg-gray-50 mx-auto p-2">
+        {/* Best Sellers Section */}
+        {bestSellers.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
+            <div className="flex overflow-x-auto space-x-2 custom-scroll">
+              {bestSellers.map(renderDishCard)}
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Regular Menu Sections */}
-      {segments.map((segment, segmentIndex) => (
-        <div key={segmentIndex} className="mb-8">
-          <h2 className="text-xl font-semibold mb-4">{segment.sectionName}</h2>
-          <div className="flex overflow-x-auto space-x-2 custom-scroll">
-            {segment.dishes.map(renderDishCard)}
+        {/* Must Try Section */}
+        {mustTry.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+            <div className="flex overflow-x-auto space-x-2 custom-scroll">
+              {mustTry.map(renderDishCard)}
+            </div>
           </div>
-        </div>
-      ))}
+        )}
+
+        {/* Today's Special Section */}
+        {todaysSpecial.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+            <div className="flex overflow-x-auto space-x-2 custom-scroll">
+              {todaysSpecial.map(renderDishCard)}
+            </div>
+          </div>
+        )}
+
+        {/* Regular Menu Sections */}
+        {segments.map((segment, segmentIndex) => (
+          <div key={segmentIndex} className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">
+              {segment.sectionName}
+            </h2>
+            <div className="flex overflow-x-auto space-x-2 custom-scroll">
+              {segment.dishes.map(renderDishCard)}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

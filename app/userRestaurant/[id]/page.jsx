@@ -46,10 +46,10 @@ export default function Page({ params }) {
           prices: [{ quantity: "", price: "", serves: "" }],
           image: "", // Image URL
           inStock: true,
+          isVeg: true,
           bestSeller: false,
           todaysSpecial: false,
           mustTry: false,
-
         },
       ],
     },
@@ -67,6 +67,7 @@ export default function Page({ params }) {
             prices: [{ quantity: "", price: "", serves: "" }],
             image: "", // Image URL
             inStock: true,
+            isVeg: true,
             bestSeller: false,
             todaysSpecial: false,
             mustTry: false,
@@ -84,6 +85,7 @@ export default function Page({ params }) {
       prices: [{ quantity: "", price: "", serves: "" }],
       image: "", // Image URL
       inStock: true,
+      isVeg: true,
       bestSeller: false,
       todaysSpecial: false,
       mustTry: false,
@@ -202,11 +204,11 @@ export default function Page({ params }) {
         // Optionally reset the form or redirect
       } else {
         const errorData = await response.json();
-        alert(`Error: ${errorData.message}`); // Display error message
+        // alert(`Error: ${errorData.message}`); // Display error message
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("An error occurred while submitting the form.");
+      toast.error("An error occurred while submitting the form.Check All Value of serves they should be greater or equal to 1");
     }
   };
 
@@ -271,7 +273,7 @@ export default function Page({ params }) {
           >
             <div className="flex flex-col items-center cursor-pointer">
               <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
-                <VscPreview  className="text-gray-300 text-5xl" />
+                <VscPreview className="text-gray-300 text-5xl" />
               </div>
               <p className="text-md font-semibold text-center text-gray-100 mt-2">
                 Show Preview
@@ -423,6 +425,16 @@ export default function Page({ params }) {
                         }
                       />
                       <label className="ml-2">In Stock</label>
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        checked={dish.isVeg}
+                        onChange={(e) =>
+                          handleChange(e, segmentIndex, dishIndex, "isVeg")
+                        }
+                      />
+                      <label className="ml-2">Is Veg</label>
                     </div>
                     <div className="flex items-center mb-2">
                       <input

@@ -56,6 +56,7 @@ export default function MenuPage({ params }) {
             description: "",
             prices: [{ quantity: "", price: "", serves: "" }],
             inStock: true,
+            isVeg: true,
             bestSeller: false,
             todaysSpecial: false,
             mustTry: false,
@@ -72,6 +73,7 @@ export default function MenuPage({ params }) {
       description: "",
       prices: [{ quantity: "", price: "", serves: "" }],
       inStock: true,
+      isVeg: true,
       bestSeller: false,
       todaysSpecial: false,
       mustTry: false,
@@ -189,7 +191,9 @@ export default function MenuPage({ params }) {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("An error occurred while updating the menu.");
+      toast.error(
+        "An error occurred while submitting the form.Check All Value of serves they should be greater or equal to 1"
+      );
     }
   };
 
@@ -335,6 +339,17 @@ export default function MenuPage({ params }) {
                         }
                       />{" "}
                       In Stock
+                    </label>
+
+                    <label>
+                      <input
+                        type="checkbox"
+                        checked={dish.isVeg}
+                        onChange={(e) =>
+                          handleChange(e, segmentIndex, dishIndex, "isVeg")
+                        }
+                      />{" "}
+                      Is Veg
                     </label>
 
                     <label>
