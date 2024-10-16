@@ -129,7 +129,7 @@ function Page({ params }) {
   return (
     <div className="bg-gray-50">
       {/* search */}
-      <div className="flex items-center gap-4 rounded-b-2xl w-full p-4 ">
+      <div className="flex items-center justify-between gap-4 rounded-b-2xl w-full p-4 ">
         <div className="bg-gray-50 gap-2 p-2 pl-4 h-12 rounded-full border border-gray-400 flex items-center w-full max-w-md">
           <IoIosSearch className="text-gray-500 text-xl" />
           <input
@@ -166,7 +166,12 @@ function Page({ params }) {
         {bestSellers.length > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
+              <div className="flex gap-2 items-center">
+                <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
+                <p className="bg-yellow-400 relative -top-2 w-6 flex justify-center items-center text-[10px] px-2 py-1 text-white font-semibold rounded-lg">
+                  <FaFire className="text-white" />
+                </p>
+              </div>
               <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
                 See all
               </p>
@@ -181,7 +186,12 @@ function Page({ params }) {
         {mustTry.length > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+              <div className="flex gap-2 items-center">
+                <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+                <p className="bg-[#3b82f6] relative -top-2 w-6 flex justify-center items-center text-[10px] py-1 text-white font-semibold rounded-lg">
+                  <FaStar className="text-white" />
+                </p>
+              </div>
               <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
                 See all
               </p>
@@ -196,7 +206,12 @@ function Page({ params }) {
         {todaysSpecial.length > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between">
-              <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+              <div className="flex gap-2 items-center">
+                <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+                <p className="bg-[#ef4444] relative -top-2 w-14 flex justify-center items-center text-[10px] px-2 py-[1.5px] text-white font-semibold rounded-lg">
+                  TodaySpl
+                </p>
+              </div>
               <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
                 See all
               </p>
