@@ -8,10 +8,11 @@ const dishSchema = new Schema({
     {
       quantity: { type: String, required: true }, // e.g., "Small", "Medium", "Large"
       price: { type: Number, required: true, min: 0 }, // Price for the quantity
-      serves: { type: Number, required: true, min: 1 }, // Number of people it serves
+      serves: { type: Number, required: true}, // Number of people it serves
     },
   ],
   image: { type: String, default: "" }, // Optional image field
+  spiciness: { type: Number, required: true, min: 1 },
   inStock: { type: Boolean, default: true }, // Availability status
   isVeg: { type: Boolean, default: true },
   bestSeller: { type: Boolean, default: false }, // If the dish is a best-seller

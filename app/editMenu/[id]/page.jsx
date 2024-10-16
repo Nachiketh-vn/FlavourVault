@@ -56,6 +56,7 @@ export default function MenuPage({ params }) {
             description: "",
             prices: [{ quantity: "", price: "", serves: "" }],
             inStock: true,
+            spiciness:"",
             isVeg: true,
             bestSeller: false,
             todaysSpecial: false,
@@ -73,6 +74,7 @@ export default function MenuPage({ params }) {
       description: "",
       prices: [{ quantity: "", price: "", serves: "" }],
       inStock: true,
+      spiciness: "",
       isVeg: true,
       bestSeller: false,
       todaysSpecial: false,
@@ -328,6 +330,16 @@ export default function MenuPage({ params }) {
                       </button>
                     </div>
                   ))}
+
+                  <input
+                    type="text"
+                    value={dish.spiciness}
+                    onChange={(e) =>
+                      handleChange(e, segmentIndex, dishIndex, "spiciness")
+                    }
+                    placeholder="Spiciness [1-5]"
+                    className="w-full mb-2 p-2 rounded"
+                  />
 
                   <div className="flex items-center space-x-2">
                     <label>

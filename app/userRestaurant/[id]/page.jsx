@@ -46,6 +46,7 @@ export default function Page({ params }) {
           prices: [{ quantity: "", price: "", serves: "" }],
           image: "", // Image URL
           inStock: true,
+          spiciness:"",
           isVeg: true,
           bestSeller: false,
           todaysSpecial: false,
@@ -67,6 +68,7 @@ export default function Page({ params }) {
             prices: [{ quantity: "", price: "", serves: "" }],
             image: "", // Image URL
             inStock: true,
+            spiciness: "",
             isVeg: true,
             bestSeller: false,
             todaysSpecial: false,
@@ -85,11 +87,11 @@ export default function Page({ params }) {
       prices: [{ quantity: "", price: "", serves: "" }],
       image: "", // Image URL
       inStock: true,
+      spiciness: "",
       isVeg: true,
       bestSeller: false,
       todaysSpecial: false,
       mustTry: false,
-      
     });
     setSegments(updatedSegments);
   };
@@ -426,6 +428,21 @@ export default function Page({ params }) {
                       />
                       <label className="ml-2">In Stock</label>
                     </div>
+
+                    <input
+                      className="p-2 w-full mb-2 border border-gray-600 rounded-lg bg-gray-700"
+                      type="number"
+                      placeholder="Spiciness [1-5]"
+                      value={dish.spiciness}
+                      onChange={(e) => {
+                        const updatedSegments = [...segments];
+                        updatedSegments[segmentIndex].dishes[
+                          dishIndex
+                        ].spiciness = e.target.value;
+                        setSegments(updatedSegments);
+                      }}
+                      required
+                    />
                     <div className="flex items-center mb-2">
                       <input
                         type="checkbox"

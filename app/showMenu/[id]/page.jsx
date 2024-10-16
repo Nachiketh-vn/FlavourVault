@@ -74,7 +74,7 @@ function Page({ params }) {
         key={dish._id.$oid}
         className="p-2 bg-white border-[1.5px] flex-col border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
       >
-        <Link href={""}>
+        <Link href={`/showDish/${dish._id}?restaurantId=${restaurantId}`}>
           <div>
             {dish.image ? (
               <div className="flex justify-center">
