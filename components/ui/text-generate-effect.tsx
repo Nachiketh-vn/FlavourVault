@@ -38,7 +38,7 @@ export const TextGenerateEffect = ({
           return (
             <motion.span
               key={word + idx}
-              className="text-white opacity-0"
+              className="text-gray-200 text-sm md:text-pretty md:text-base opacity-0"
               style={{
                 filter: filter ? "blur(10px)" : "none",
                 position: "relative", // Ensure relative positioning

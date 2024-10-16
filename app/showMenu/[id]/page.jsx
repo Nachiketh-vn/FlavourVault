@@ -7,7 +7,8 @@ import { CiBookmark } from "react-icons/ci";
 import Link from "next/link";
 import { IoIosSearch } from "react-icons/io";
 import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
+import { FaStar } from "react-icons/fa";
+import { FaFire } from "react-icons/fa6";
 
 function Page({ params }) {
   const { id: restaurantId } = params;
@@ -56,25 +57,22 @@ function Page({ params }) {
     return <div>{error}</div>;
   }
 
+  const filterDishes = (dishes) => {
+    return isVegMode ? dishes.filter((dish) => dish.isVeg) : dishes;
+  };
+
   const renderDishCard = (dish) => {
-    // Extract the prices into an array
     const priceArray = dish.prices.map((price) => price.price);
-
-    // Sort the prices in ascending order
     priceArray.sort((a, b) => a - b);
-
-    // Get the minimum and maximum prices
     const minPrice = priceArray[0];
     const maxPrice = priceArray[priceArray.length - 1];
-
-    // Determine if we should display a range or a single price
     const displayPrice =
       minPrice === maxPrice ? `₹${minPrice}` : `₹${minPrice} - ₹${maxPrice}`;
 
     return (
       <div
         key={dish._id.$oid}
-        className=" p-2  border-[1.5px] flex-col border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
+        className="p-2 bg-white border-[1.5px] flex-col border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
       >
         <Link href={""}>
           <div>
@@ -89,14 +87,33 @@ function Page({ params }) {
                 />
               </div>
             ) : (
-              <GiKnifeFork className="w-28 h-24" />
+              <div className="flex justify-center ">
+                <GiKnifeFork className="w-28 h-24" />
+              </div>
             )}
+            <div className="flex py-1 items-center gap-2">
+              {dish.todaysSpecial && (
+                <p className="bg-[#ef4444] relative top-2 w-14 flex justify-center items-center text-[10px] px-2 py-[1.5px] text-white font-semibold rounded-lg">
+                  TodaySpl
+                </p>
+              )}
+              {dish.bestSeller && (
+                <p className="bg-yellow-400 relative top-2 w-6 flex justify-center items-center text-[10px] px-2 py-1 text-white font-semibold rounded-lg">
+                  <FaFire className="text-white" />
+                </p>
+              )}
+              {dish.mustTry && (
+                <p className="bg-[#3b82f6] relative top-2 w-6 flex justify-center items-center text-[10px] py-1 text-white font-semibold rounded-lg">
+                  <FaStar className="text-white" />
+                </p>
+              )}
+            </div>
             <h3 className="text-balance px-1 mt-2 text-gray-700 font-medium">
               {dish.dishName}
             </h3>
           </div>
           <div className="flex justify-between">
-            <p className="text-gray-900 font-bold">{displayPrice}</p>
+            <p className="text-gray-900 pl-1 font-bold">{displayPrice}</p>
             <div className="relative -top-2 flex pr-4">
               <button>
                 <FaBookmark className="absolute text-gray-200 scale-125" />
@@ -111,9 +128,8 @@ function Page({ params }) {
 
   return (
     <div className="bg-gray-50">
-
       {/* search */}
-      <div className=" flex items-center gap-4 rounded-b-2xl w-full p-4 ">
+      <div className="flex items-center gap-4 rounded-b-2xl w-full p-4 ">
         <div className="bg-gray-50 gap-2 p-2 pl-4 h-12 rounded-full border border-gray-400 flex items-center w-full max-w-md">
           <IoIosSearch className="text-gray-500 text-xl" />
           <input
@@ -145,16 +161,18 @@ function Page({ params }) {
         </div>
       </div>
 
-      {/* banner */}
-      
-
       <div className="container bg-gray-50 mx-auto p-2">
         {/* Best Sellers Section */}
         {bestSellers.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
+              <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
+                See all
+              </p>
+            </div>
             <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {bestSellers.map(renderDishCard)}
+              {filterDishes(bestSellers).map(renderDishCard)}
             </div>
           </div>
         )}
@@ -162,9 +180,14 @@ function Page({ params }) {
         {/* Must Try Section */}
         {mustTry.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+              <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
+                See all
+              </p>
+            </div>
             <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {mustTry.map(renderDishCard)}
+              {filterDishes(mustTry).map(renderDishCard)}
             </div>
           </div>
         )}
@@ -172,24 +195,39 @@ function Page({ params }) {
         {/* Today's Special Section */}
         {todaysSpecial.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+              <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
+                See all
+              </p>
+            </div>
             <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {todaysSpecial.map(renderDishCard)}
+              {filterDishes(todaysSpecial).map(renderDishCard)}
             </div>
           </div>
         )}
 
         {/* Regular Menu Sections */}
-        {segments.map((segment, segmentIndex) => (
-          <div key={segmentIndex} className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">
-              {segment.sectionName}
-            </h2>
-            <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {segment.dishes.map(renderDishCard)}
-            </div>
-          </div>
-        ))}
+        {segments.map((segment, segmentIndex) => {
+          const filteredDishes = filterDishes(segment.dishes);
+          return (
+            filteredDishes.length > 0 && ( // Check if the segment has dishes before rendering
+              <div key={segmentIndex} className="mb-8">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold mb-4">
+                    {segment.sectionName}
+                  </h2>
+                  <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
+                    See all
+                  </p>
+                </div>
+                <div className="flex overflow-x-auto space-x-2 custom-scroll">
+                  {filteredDishes.map(renderDishCard)}
+                </div>
+              </div>
+            )
+          );
+        })}
       </div>
     </div>
   );

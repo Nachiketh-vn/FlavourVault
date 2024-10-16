@@ -19,10 +19,13 @@ export default function BackgroundBeamsDemo() {
       <BackgroundBeams />
 
       {/* Hero */}
-      <div className="mt-[4rem] flex flex-1 items-center justify-center p-4">
+      <div className="mt-[2rem] md:mt-[4rem] flex flex-1 items-center justify-center p-4">
         <div className="w-4/5 lg:w-4/5 space-y-6 text-center lg:text-center">
           <h1 className="text-4xl font-extrabold lg:text-6xl">
-            Advanced <span className="text-[#2b9c2b]">Smart QR Menu</span>{" "}
+            Advanced{" "}
+            <span className="md:text-[#2b9c2b] text-[#40bd40]">
+              Smart QR Menu
+            </span>{" "}
             Solutions for Modern Restaurants
           </h1>
           <div className="flex justify-center">
