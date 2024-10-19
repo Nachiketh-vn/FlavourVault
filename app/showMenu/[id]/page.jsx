@@ -2,8 +2,6 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { GiKnifeFork } from "react-icons/gi";
-import { FaBookmark } from "react-icons/fa6";
-import { CiBookmark } from "react-icons/ci";
 import Link from "next/link";
 import { IoIosSearch } from "react-icons/io";
 import { Label } from "@/components/ui/label";
@@ -74,7 +72,9 @@ function Page({ params }) {
         key={dish._id.$oid}
         className="p-2 bg-white border-[1.5px] flex-col border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
       >
-        <Link href={`/showDish/${dish._id}?restaurantId=${restaurantId}`}>
+        <Link
+          href={`/showMenu/showDish/${dish._id}?restaurantId=${restaurantId}`}
+        >
           <div>
             {dish.image ? (
               <div className="flex justify-center">
@@ -91,6 +91,9 @@ function Page({ params }) {
                 <GiKnifeFork className="w-28 h-24" />
               </div>
             )}
+
+            <hr className="border-1 relative top-3 border-gray-400 pt-2" />
+
             <div className="flex py-1 items-center gap-2">
               {dish.todaysSpecial && (
                 <p className="bg-[#ef4444] relative top-2 w-14 flex justify-center items-center text-[10px] px-2 py-[1.5px] text-white font-semibold rounded-lg">
@@ -114,12 +117,19 @@ function Page({ params }) {
           </div>
           <div className="flex justify-between">
             <p className="text-gray-900 pl-1 font-bold">{displayPrice}</p>
-            <div className="relative -top-2 flex pr-4">
-              <button>
-                <FaBookmark className="absolute text-gray-200 scale-125" />
-                <CiBookmark className="absolute text-gray-500 scale-150 stroke-[1.01]" />
-              </button>
-            </div>
+            {dish.isVeg ? (
+              <div className="relative top-1 left-2 flex pr-4">
+                <div className="w-4 h-4 border-2 border-green-600 flex rounded justify-center items-center">
+                  <div className=" w-2 h-2 rounded-full bg-green-600"></div>
+                </div>
+              </div>
+            ) : (
+              <div className="relative top-1 left-2 flex pr-4">
+                <div className="w-4 h-4 border-2 border-red-600 flex rounded justify-center items-center">
+                  <div className=" w-2 h-2 rounded-full bg-red-600"></div>
+                </div>
+              </div>
+            )}
           </div>
         </Link>
       </div>
@@ -163,7 +173,7 @@ function Page({ params }) {
 
       <div className="container bg-gray-50 mx-auto p-2">
         {/* Best Sellers Section */}
-        {bestSellers.length > 0 && (
+        {filterDishes(bestSellers).length > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div className="flex gap-2 items-center">
@@ -172,9 +182,6 @@ function Page({ params }) {
                   <FaFire className="text-white" />
                 </p>
               </div>
-              <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
-                See all
-              </p>
             </div>
             <div className="flex overflow-x-auto space-x-2 custom-scroll">
               {filterDishes(bestSellers).map(renderDishCard)}
@@ -183,7 +190,7 @@ function Page({ params }) {
         )}
 
         {/* Must Try Section */}
-        {mustTry.length > 0 && (
+        {filterDishes(mustTry).length > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div className="flex gap-2 items-center">
@@ -192,9 +199,6 @@ function Page({ params }) {
                   <FaStar className="text-white" />
                 </p>
               </div>
-              <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
-                See all
-              </p>
             </div>
             <div className="flex overflow-x-auto space-x-2 custom-scroll">
               {filterDishes(mustTry).map(renderDishCard)}
@@ -203,7 +207,7 @@ function Page({ params }) {
         )}
 
         {/* Today's Special Section */}
-        {todaysSpecial.length > 0 && (
+        {filterDishes(todaysSpecial).length > 0 && (
           <div className="mb-8">
             <div className="flex items-center justify-between">
               <div className="flex gap-2 items-center">
@@ -212,9 +216,6 @@ function Page({ params }) {
                   TodaySpl
                 </p>
               </div>
-              <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
-                See all
-              </p>
             </div>
             <div className="flex overflow-x-auto space-x-2 custom-scroll">
               {filterDishes(todaysSpecial).map(renderDishCard)}
@@ -232,9 +233,13 @@ function Page({ params }) {
                   <h2 className="text-xl font-semibold mb-4">
                     {segment.sectionName}
                   </h2>
-                  <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
-                    See all
-                  </p>
+                  <Link
+                    href={`/showMenu/showSegment/${segment._id}?restaurantId=${restaurantId}`}
+                  >
+                    <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
+                      See all
+                    </p>
+                  </Link>
                 </div>
                 <div className="flex overflow-x-auto space-x-2 custom-scroll">
                   {filteredDishes.map(renderDishCard)}

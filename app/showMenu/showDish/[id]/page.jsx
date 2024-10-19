@@ -1,16 +1,14 @@
-"use client"
-import React from 'react'
-import { useState,useEffect } from 'react';
+"use client";
+import React from "react";
+import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import { FaFire } from "react-icons/fa6";
 import { GiKnifeFork } from "react-icons/gi";
-import { FaBookmark } from "react-icons/fa6";
-import { CiBookmark } from "react-icons/ci";
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { FaArrowLeftLong } from "react-icons/fa6";
 import { GiChiliPepper } from "react-icons/gi";
-import Dishpage from "../../../components/dishpage"
+import Dishpage from "../../../../components/dishpage";
 
 function page({ params, searchParams }) {
   const { id: dishId } = params;
@@ -18,11 +16,11 @@ function page({ params, searchParams }) {
   const [dish, setDish] = useState(null);
   const [loading, setLoading] = useState(true); // State to handle loading
 
-   const router = useRouter();
+  const router = useRouter();
 
-   const handleGoBack = () => {
-     router.back(); // Go back to the previous page
-   };
+  const handleGoBack = () => {
+    router.back(); // Go back to the previous page
+  };
 
   useEffect(() => {
     // Fetch dish details if both IDs are present
@@ -153,20 +151,10 @@ function page({ params, searchParams }) {
           </div>
         </div>
       </div>
-      <div>
-        <div className='mx-12 flex justify-center hover:bg-emerald-500  my-4  bg-emerald-400 rounded-full px-2 py-1'>
-          <button className="flex font-medium items-center gap-2">
-            Add this your Bookmark{" "}
-            <div className="relative -top-2">
-              <FaBookmark className="absolute text-gray-200 scale-125" />
-              <CiBookmark className="absolute text-gray-500 scale-150 stroke-[1.01]" />
-            </div>
-          </button>
-        </div>
-      </div>
 
-        <Dishpage restaurantId={restaurantId} />
-      
+      <hr className="border-1 relative border-gray-400 top-2 mx-6" />
+
+      <Dishpage restaurantId={restaurantId} />
     </div>
   );
 }

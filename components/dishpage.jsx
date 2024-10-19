@@ -54,7 +54,7 @@ function Dishpage({ restaurantId }) {
   }, [restaurantId]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="pt-2">Loading...</div>;
   }
 
   if (error) {
