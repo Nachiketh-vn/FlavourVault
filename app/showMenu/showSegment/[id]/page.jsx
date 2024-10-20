@@ -84,7 +84,9 @@ function Page({ params, searchParams }) {
               </div>
             ) : (
               <div className="flex justify-center ">
-                <GiKnifeFork className="w-28 h-24" />
+                <div className="border-2 border-gray-400 bg-gray-200 w-32 h-24 flex justify-center items-center rounded-md">
+                  <GiKnifeFork className="w-20 h-16 text-gray-500" />
+                </div>
               </div>
             )}
 
@@ -113,6 +115,19 @@ function Page({ params, searchParams }) {
           </div>
           <div className="flex justify-between">
             <p className="text-gray-900 pl-1 font-bold">{displayPrice}</p>
+            {dish.isVeg ? (
+              <div className="relative top-1 left-2 flex pr-4">
+                <div className="w-4 h-4 border-2 border-green-600 flex rounded justify-center items-center">
+                  <div className=" w-2 h-2 rounded-full bg-green-600"></div>
+                </div>
+              </div>
+            ) : (
+              <div className="relative top-1 left-2 flex pr-4">
+                <div className="w-4 h-4 border-2 border-red-600 flex rounded justify-center items-center">
+                  <div className=" w-2 h-2 rounded-full bg-red-600"></div>
+                </div>
+              </div>
+            )}
           </div>
         </Link>
       </div>

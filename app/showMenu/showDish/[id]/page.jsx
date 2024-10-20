@@ -93,8 +93,10 @@ function page({ params, searchParams }) {
             />
           </div>
         ) : (
-          <div className="flex justify-center ">
-            <GiKnifeFork className="w-72 h-48" />
+          <div className="flex justify-center mx-auto">
+            <div className="w-72 h-48 flex justify-center rounded-lg items-center bg-gray-200 border-2 border-gray-400"> 
+              <GiKnifeFork className="w-48 h-40 text-gray-500" />
+            </div>
           </div>
         )}
 

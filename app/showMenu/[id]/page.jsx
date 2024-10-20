@@ -18,6 +18,7 @@ function Page({ params }) {
   const [mustTry, setMustTry] = useState([]);
   const [todaysSpecial, setTodaysSpecial] = useState([]);
   const [isVegMode, setIsVegMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -28,7 +29,6 @@ function Page({ params }) {
           setMenuData(data);
           setSegments(data.sections || []);
 
-          // Extract dishes for special sections
           const allDishes = data.sections.flatMap((section) => section.dishes);
           setBestSellers(allDishes.filter((dish) => dish.bestSeller));
           setMustTry(allDishes.filter((dish) => dish.mustTry));
@@ -57,6 +57,24 @@ function Page({ params }) {
 
   const filterDishes = (dishes) => {
     return isVegMode ? dishes.filter((dish) => dish.isVeg) : dishes;
+  };
+
+  const filterBySearch = (dishes) => {
+    if (!searchQuery) return dishes;
+    return dishes.filter((dish) =>
+      dish.dishName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  };
+
+  const filterSegmentsBySearch = (segments) => {
+    if (!searchQuery) return segments;
+    return segments.filter(
+      (segment) =>
+        segment.sectionName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        segment.dishes.some((dish) =>
+          dish.dishName.toLowerCase().includes(searchQuery.toLowerCase())
+        )
+    );
   };
 
   const renderDishCard = (dish) => {
@@ -88,7 +106,9 @@ function Page({ params }) {
               </div>
             ) : (
               <div className="flex justify-center ">
-                <GiKnifeFork className="w-28 h-24" />
+                <div className="border-2 border-gray-400 bg-gray-200 w-32 h-24 flex justify-center items-center rounded-md">
+                  <GiKnifeFork className="w-20 h-16 text-gray-500" />
+                </div>
               </div>
             )}
 
@@ -138,7 +158,7 @@ function Page({ params }) {
 
   return (
     <div className="bg-gray-50">
-      {/* search */}
+      {/* Search Bar */}
       <div className="flex items-center justify-between gap-4 rounded-b-2xl w-full p-4 ">
         <div className="bg-gray-50 gap-2 p-2 pl-4 h-12 rounded-full border border-gray-400 flex items-center w-full max-w-md">
           <IoIosSearch className="text-gray-500 text-xl" />
@@ -146,6 +166,8 @@ function Page({ params }) {
             type="text"
             placeholder="Search..."
             className="bg-gray-50 focus:outline-none ml-2 w-full"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
         <div className="flex flex-col items-center">
@@ -171,77 +193,54 @@ function Page({ params }) {
         </div>
       </div>
 
-      <div className="container bg-gray-50 mx-auto p-2">
-        {/* Best Sellers Section */}
-        {filterDishes(bestSellers).length > 0 && (
+      <div className=" bg-gray-50 px-2 pb-4">
+        {/* Bestsellers Section */}
+        {filterBySearch(filterDishes(bestSellers)).length > 0 && (
           <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 items-center">
-                <h2 className="text-xl font-semibold mb-4">Best Sellers</h2>
-                <p className="bg-yellow-400 relative -top-2 w-6 flex justify-center items-center text-[10px] px-2 py-1 text-white font-semibold rounded-lg">
-                  <FaFire className="text-white" />
-                </p>
-              </div>
-            </div>
-            <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {filterDishes(bestSellers).map(renderDishCard)}
+            <h2 className="text-xl font-semibold mb-4">Bestsellers</h2>
+            <div className="flex gap-2 overflow-x-auto custom-scroll">
+              {filterBySearch(filterDishes(bestSellers)).map(renderDishCard)}
             </div>
           </div>
         )}
 
         {/* Must Try Section */}
-        {filterDishes(mustTry).length > 0 && (
+        {filterBySearch(filterDishes(mustTry)).length > 0 && (
           <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 items-center">
-                <h2 className="text-xl font-semibold mb-4">Must Try</h2>
-                <p className="bg-[#3b82f6] relative -top-2 w-6 flex justify-center items-center text-[10px] py-1 text-white font-semibold rounded-lg">
-                  <FaStar className="text-white" />
-                </p>
-              </div>
-            </div>
-            <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {filterDishes(mustTry).map(renderDishCard)}
+            <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+            <div className="flex gap-2 overflow-x-auto custom-scroll">
+              {filterBySearch(filterDishes(mustTry)).map(renderDishCard)}
             </div>
           </div>
         )}
 
         {/* Today's Special Section */}
-        {filterDishes(todaysSpecial).length > 0 && (
+        {filterBySearch(filterDishes(todaysSpecial)).length > 0 && (
           <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex gap-2 items-center">
-                <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
-                <p className="bg-[#ef4444] relative -top-2 w-14 flex justify-center items-center text-[10px] px-2 py-[1.5px] text-white font-semibold rounded-lg">
-                  TodaySpl
-                </p>
-              </div>
-            </div>
-            <div className="flex overflow-x-auto space-x-2 custom-scroll">
-              {filterDishes(todaysSpecial).map(renderDishCard)}
+            <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+            <div className="flex gap-2 overflow-x-auto custom-scroll">
+              {filterBySearch(filterDishes(todaysSpecial)).map(renderDishCard)}
             </div>
           </div>
         )}
 
         {/* Regular Menu Sections */}
-        {segments.map((segment, segmentIndex) => {
-          const filteredDishes = filterDishes(segment.dishes);
+        {filterSegmentsBySearch(segments).map((segment) => {
+          const filteredDishes = filterBySearch(filterDishes(segment.dishes));
           return (
-            filteredDishes.length > 0 && ( // Check if the segment has dishes before rendering
-              <div key={segmentIndex} className="mb-8">
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-semibold mb-4">
+            filteredDishes.length > 0 && (
+              <div key={segment.sectionName} className="mb-8">
+                <div className="flex justify-between items-center mb-4">
+                  <h2 className="text-xl font-semibold">
                     {segment.sectionName}
                   </h2>
                   <Link
                     href={`/showMenu/showSegment/${segment._id}?restaurantId=${restaurantId}`}
                   >
-                    <p className="flex gap-2 text-sm font-semibold text-orange-500 mb-3 items-center">
-                      See all
-                    </p>
+                    <p className="text-sm text-blue-500">See All</p>
                   </Link>
                 </div>
-                <div className="flex overflow-x-auto space-x-2 custom-scroll">
+                <div className="flex gap-2 overflow-x-auto custom-scroll">
                   {filteredDishes.map(renderDishCard)}
                 </div>
               </div>
