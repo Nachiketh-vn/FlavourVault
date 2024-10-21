@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { VscPreview } from "react-icons/vsc";
+import { BsQrCode } from "react-icons/bs";
 
 export default function Page({ params }) {
   const { id } = params;
@@ -279,6 +280,19 @@ export default function Page({ params }) {
               </div>
               <p className="text-md font-semibold text-center text-gray-100 mt-2">
                 Show Preview
+              </p>
+            </div>
+          </Link>
+          <Link
+            href={`/getQr/${restaurantId}`}
+            className="flex flex-col items-center w-40"
+          >
+            <div className="flex flex-col items-center cursor-pointer">
+              <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
+                <BsQrCode className="text-gray-300 text-4xl" />
+              </div>
+              <p className="text-md font-semibold text-center text-gray-100 mt-2">
+                Get Qr Code
               </p>
             </div>
           </Link>
