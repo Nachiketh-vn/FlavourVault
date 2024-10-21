@@ -7,6 +7,7 @@ import { IoIosSearch } from "react-icons/io";
 import { Label } from "@/components/ui/label";
 import { FaStar } from "react-icons/fa";
 import { FaFire } from "react-icons/fa6";
+import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 function Page({ params }) {
   const { id: restaurantId } = params;
@@ -90,68 +91,76 @@ function Page({ params }) {
         key={dish._id.$oid}
         className="p-2 bg-white border-[1.5px] flex-col border-gray-200 rounded-lg min-w-[160px] max-w-[160px]"
       >
-        <Link
-          href={`/showMenu/showDish/${dish._id}?restaurantId=${restaurantId}`}
-        >
-          <div>
-            {dish.image ? (
-              <div className="flex justify-center">
-                <Image
-                  src={dish.image}
-                  alt={dish.dishName}
-                  width={100}
-                  height={100}
-                  className="object-cover rounded-md w-32 h-24"
-                />
-              </div>
-            ) : (
-              <div className="flex justify-center ">
-                <div className="border-2 border-gray-400 bg-gray-200 w-32 h-24 flex justify-center items-center rounded-md">
-                  <GiKnifeFork className="w-20 h-16 text-gray-500" />
-                </div>
-              </div>
-            )}
-
-            <hr className="border-1 relative top-3 border-gray-400 pt-2" />
-
-            <div className="flex py-1 items-center gap-2">
-              {dish.todaysSpecial && (
-                <p className="bg-[#ef4444] relative top-2 w-14 flex justify-center items-center text-[10px] px-2 py-[1.5px] text-white font-semibold rounded-lg">
-                  TodaySpl
-                </p>
-              )}
-              {dish.bestSeller && (
-                <p className="bg-yellow-400 relative top-2 w-6 flex justify-center items-center text-[10px] px-2 py-1 text-white font-semibold rounded-lg">
-                  <FaFire className="text-white" />
-                </p>
-              )}
-              {dish.mustTry && (
-                <p className="bg-[#3b82f6] relative top-2 w-6 flex justify-center items-center text-[10px] py-1 text-white font-semibold rounded-lg">
-                  <FaStar className="text-white" />
-                </p>
-              )}
+        <div>
+          {dish.image ? (
+            <div className="flex justify-center">
+              <Image
+                src={dish.image}
+                alt={dish.dishName}
+                width={100}
+                height={100}
+                className="object-cover rounded-md w-32 h-24"
+              />
             </div>
-            <h3 className="text-balance px-1 mt-2 text-gray-700 font-medium">
-              {dish.dishName}
-            </h3>
-          </div>
-          <div className="flex justify-between">
-            <p className="text-gray-900 pl-1 font-bold">{displayPrice}</p>
-            {dish.isVeg ? (
-              <div className="relative top-1 left-2 flex pr-4">
-                <div className="w-4 h-4 border-2 border-green-600 flex rounded justify-center items-center">
-                  <div className=" w-2 h-2 rounded-full bg-green-600"></div>
-                </div>
+          ) : (
+            <div className="flex justify-center ">
+              <div className="border-2 border-gray-400 bg-gray-200 w-32 h-24 flex justify-center items-center rounded-md">
+                <GiKnifeFork className="w-20 h-16 text-gray-500" />
               </div>
-            ) : (
-              <div className="relative top-1 left-2 flex pr-4">
-                <div className="w-4 h-4 border-2 border-red-600 flex rounded justify-center items-center">
-                  <div className=" w-2 h-2 rounded-full bg-red-600"></div>
-                </div>
-              </div>
+            </div>
+          )}
+
+          <hr className="border-1 relative top-3 border-gray-400 pt-2" />
+
+          <div className="flex py-1 items-center gap-2">
+            {dish.todaysSpecial && (
+              <p className="bg-[#ef4444] relative top-2 w-14 flex justify-center items-center text-[10px] px-2 py-[1.5px] text-white font-semibold rounded-lg">
+                TodaySpl
+              </p>
+            )}
+            {dish.bestSeller && (
+              <p className="bg-yellow-400 relative top-2 w-6 flex justify-center items-center text-[10px] px-2 py-1 text-white font-semibold rounded-lg">
+                <FaFire className="text-white" />
+              </p>
+            )}
+            {dish.mustTry && (
+              <p className="bg-[#3b82f6] relative top-2 w-6 flex justify-center items-center text-[10px] py-1 text-white font-semibold rounded-lg">
+                <FaStar className="text-white" />
+              </p>
             )}
           </div>
-        </Link>
+          <h3 className="text-balance px-1 mt-2 text-gray-700 font-medium">
+            {dish.dishName}
+          </h3>
+        </div>
+        <div className="flex justify-between">
+          <p className="text-gray-900 pl-1 font-bold">{displayPrice}</p>
+        </div>
+        <div className="pl-1 flex justify-between">
+          <Link
+            href={`/showMenu/showDish/${dish._id}?restaurantId=${restaurantId}`}
+          >
+            <p className="text-sm text-gray-400 hover:text-gray-500 flex items-center underline">
+              View more{" "}
+              <span className="relative top-[1px]">
+                <MdKeyboardDoubleArrowRight />
+              </span>
+            </p>
+          </Link>
+          {dish.isVeg ? (
+            <div className="relative top-1 left-2 flex pr-4">
+              <div className="w-4 h-4 border-2 border-green-600 flex rounded justify-center items-center">
+                <div className=" w-2 h-2 rounded-full bg-green-600"></div>
+              </div>
+            </div>
+          ) : (
+            <div className="relative top-1 left-2 flex pr-4">
+              <div className="w-4 h-4 border-2 border-red-600 flex rounded justify-center items-center">
+                <div className=" w-2 h-2 rounded-full bg-red-600"></div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   };
@@ -160,7 +169,7 @@ function Page({ params }) {
     <div className="bg-gray-50">
       {/* Search Bar */}
       <div className="flex items-center justify-between gap-4 rounded-b-2xl w-full p-4 ">
-        <div className="bg-gray-50 gap-2 p-2 pl-4 h-12 rounded-full border border-gray-400 flex items-center w-full max-w-md">
+        <div className="bg-gray-50 gap-2 p-2 pl-4 h-12 rounded-full border border-gray-400 flex items-center w-full">
           <IoIosSearch className="text-gray-500 text-xl" />
           <input
             type="text"
@@ -194,6 +203,16 @@ function Page({ params }) {
       </div>
 
       <div className=" bg-gray-50 px-2 pb-4">
+        {/* Today's Special Section */}
+        {filterBySearch(filterDishes(todaysSpecial)).length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+            <div className="flex gap-2 overflow-x-auto custom-scroll">
+              {filterBySearch(filterDishes(todaysSpecial)).map(renderDishCard)}
+            </div>
+          </div>
+        )}
+
         {/* Bestsellers Section */}
         {filterBySearch(filterDishes(bestSellers)).length > 0 && (
           <div className="mb-8">
@@ -214,39 +233,44 @@ function Page({ params }) {
           </div>
         )}
 
-        {/* Today's Special Section */}
-        {filterBySearch(filterDishes(todaysSpecial)).length > 0 && (
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
-            <div className="flex gap-2 overflow-x-auto custom-scroll">
-              {filterBySearch(filterDishes(todaysSpecial)).map(renderDishCard)}
-            </div>
-          </div>
-        )}
-
         {/* Regular Menu Sections */}
-        {filterSegmentsBySearch(segments).map((segment) => {
-          const filteredDishes = filterBySearch(filterDishes(segment.dishes));
-          return (
-            filteredDishes.length > 0 && (
-              <div key={segment.sectionName} className="mb-8">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold">
-                    {segment.sectionName}
-                  </h2>
-                  <Link
-                    href={`/showMenu/showSegment/${segment._id}?restaurantId=${restaurantId}`}
-                  >
-                    <p className="text-sm text-blue-500">See All</p>
-                  </Link>
+        <div className="pb-6">
+          {filterSegmentsBySearch(segments).map((segment) => {
+            const filteredDishes = filterBySearch(filterDishes(segment.dishes));
+            return (
+              filteredDishes.length > 0 && (
+                <div key={segment.sectionName} className="mb-8">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold">
+                      {segment.sectionName}
+                    </h2>
+                    <Link
+                      href={`/showMenu/showSegment/${segment._id}?restaurantId=${restaurantId}`}
+                    >
+                      <p className="text-sm text-blue-500">See All</p>
+                    </Link>
+                  </div>
+                  <div className="flex gap-2 overflow-x-auto custom-scroll">
+                    {filteredDishes.map(renderDishCard)}
+                  </div>
                 </div>
-                <div className="flex gap-2 overflow-x-auto custom-scroll">
-                  {filteredDishes.map(renderDishCard)}
-                </div>
-              </div>
-            )
-          );
-        })}
+              )
+            );
+          })}
+        </div>
+      </div>
+
+      <div className="fixed bottom-4 left-0 w-full flex justify-center">
+        <div className="bg-white rounded-full shadow-lg flex border border-gray-300 w-11/12 max-w-md justify-around p-2">
+          <div className="w-full text-center p-2 cursor-pointer">
+            <p className="text-gray-800 font-medium">Give Review</p>
+          </div>
+          <div className="border-l border-gray-300 h-full" />{" "}
+          {/* Vertical line separator */}
+          <div className="w-full text-center p-2 cursor-pointer">
+            <p className="text-gray-800 font-medium">Call Waiter</p>
+          </div>
+        </div>
       </div>
     </div>
   );
