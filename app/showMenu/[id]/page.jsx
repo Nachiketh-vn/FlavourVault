@@ -206,7 +206,9 @@ function Page({ params }) {
         {/* Today's Special Section */}
         {filterBySearch(filterDishes(todaysSpecial)).length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Today's Special</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Today's Special
+            </h2>
             <div className="flex gap-2 overflow-x-auto custom-scroll">
               {filterBySearch(filterDishes(todaysSpecial)).map(renderDishCard)}
             </div>
@@ -216,7 +218,9 @@ function Page({ params }) {
         {/* Bestsellers Section */}
         {filterBySearch(filterDishes(bestSellers)).length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Bestsellers</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Bestsellers
+            </h2>
             <div className="flex gap-2 overflow-x-auto custom-scroll">
               {filterBySearch(filterDishes(bestSellers)).map(renderDishCard)}
             </div>
@@ -226,7 +230,9 @@ function Page({ params }) {
         {/* Must Try Section */}
         {filterBySearch(filterDishes(mustTry)).length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4">Must Try</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Must Try
+            </h2>
             <div className="flex gap-2 overflow-x-auto custom-scroll">
               {filterBySearch(filterDishes(mustTry)).map(renderDishCard)}
             </div>
@@ -241,7 +247,7 @@ function Page({ params }) {
               filteredDishes.length > 0 && (
                 <div key={segment.sectionName} className="mb-8">
                   <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-xl font-semibold">
+                    <h2 className="text-xl text-gray-800 font-semibold">
                       {segment.sectionName}
                     </h2>
                     <Link
@@ -263,7 +269,9 @@ function Page({ params }) {
       <div className="fixed bottom-4 left-0 w-full flex justify-center">
         <div className="bg-white rounded-full shadow-lg flex border border-gray-300 w-11/12 max-w-md justify-around p-2">
           <div className="w-full text-center p-2 cursor-pointer">
-            <p className="text-gray-800 font-medium">Give Review</p>
+            <Link href={`/addReview/${restaurantId}`}>
+              <p className="text-gray-800 font-medium">Give Review</p>
+            </Link>
           </div>
           <div className="border-l border-gray-300 h-full" />{" "}
           {/* Vertical line separator */}

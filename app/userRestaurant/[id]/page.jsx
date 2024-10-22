@@ -1,5 +1,5 @@
-"use client"
-import { useState, useEffect} from "react";
+"use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import Navbar from "@/components/navbar";
@@ -9,6 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { VscPreview } from "react-icons/vsc";
 import { BsQrCode } from "react-icons/bs";
+import { RxDashboard } from "react-icons/rx";
 
 export default function Page({ params }) {
   const { id } = params;
@@ -47,7 +48,7 @@ export default function Page({ params }) {
           prices: [{ quantity: "", price: "", serves: "" }],
           image: "", // Image URL
           inStock: true,
-          spiciness:"",
+          spiciness: "",
           isVeg: true,
           bestSeller: false,
           todaysSpecial: false,
@@ -211,7 +212,9 @@ export default function Page({ params }) {
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      toast.error("An error occurred while submitting the form.Check All Value of serves they should be greater or equal to 1");
+      toast.error(
+        "An error occurred while submitting the form.Check All Value of serves they should be greater or equal to 1"
+      );
     }
   };
 
@@ -256,7 +259,7 @@ export default function Page({ params }) {
       </div>
 
       {menuPresent ? (
-        <div className="flex flex-row gap-4 ">
+        <div className="flex flex-row gap-4 pb-4">
           <Link
             href={`/editMenu/${restaurantId}`}
             className="flex flex-col items-center w-40"
@@ -293,6 +296,19 @@ export default function Page({ params }) {
               </div>
               <p className="text-md font-semibold text-center text-gray-100 mt-2">
                 Get Qr Code
+              </p>
+            </div>
+          </Link>
+          <Link
+            href={`/adminDashboard/${restaurantId}`}
+            className="flex flex-col items-center w-40"
+          >
+            <div className="flex flex-col items-center cursor-pointer">
+              <div className="h-20 w-20 rounded-lg border-[1.5px] border-white bg-neutral-900 flex justify-center items-center hover:scale-105 transition ease-in">
+                <RxDashboard className="text-gray-300 text-5xl" />
+              </div>
+              <p className="text-md font-semibold text-center text-gray-100 mt-2">
+                Dashboard
               </p>
             </div>
           </Link>
