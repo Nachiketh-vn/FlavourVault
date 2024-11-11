@@ -1,12 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function AdminDashboard({ params }) {
   const { id: restaurantId } = params;
   const [selectedSection, setSelectedSection] = useState("reviews");
   const [reviews, setReviews] = useState([]);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const router = useRouter();
 
   useEffect(() => {
     if (selectedSection === "reviews") {
@@ -27,8 +31,20 @@ function AdminDashboard({ params }) {
     }
   };
 
+  const goBack =()=>{
+    router.back();
+  }
+
   return (
     <div className="flex bg-white min-h-screen">
+      <div>
+        <button
+          onClick={goBack}
+          className="absolute top-2 right-2 flex items-center p-2 rounded-md font-medium text-gray-700 hover:text-gray-800"
+        >
+          <IoMdArrowRoundBack  className="inline text-2xl font-semibold"/> Go Back
+        </button>
+      </div>
       {/* Sidebar */}
       <div
         className={`fixed inset-0 transform min-h-screen ${

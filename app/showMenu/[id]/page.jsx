@@ -9,8 +9,9 @@ import { FaStar } from "react-icons/fa";
 import { FaFire } from "react-icons/fa6";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
-function Page({ params }) {
+function Page({ params, searchParams }) {
   const { id: restaurantId } = params;
+  const table = searchParams.table;
   const [menuData, setMenuData] = useState(null);
   const [error, setError] = useState(null);
   const [segments, setSegments] = useState([]);

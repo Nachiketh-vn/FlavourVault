@@ -8,6 +8,8 @@ import { BackgroundBeams } from "@/components/ui/background-beams";
 import Link from "next/link";
 import { FaHotel } from "react-icons/fa";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MdErrorOutline } from "react-icons/md";
+
 
 interface Restaurant {
   _id: string;
@@ -77,23 +79,29 @@ const Page: React.FC = () => {
               {session.user.name}
             </span>
           ) : (
-            <Skeleton className="h-6 w-24 bg-gray-500 inline-block ml-2 rounded" />
+            <Skeleton className="h-6 w-28 bg-gray-500 inline-block ml-2 rounded" />
           )}
         </h1>
       </div>
 
       <div className="mx-4 sm:mx-8 lg:mx-16">
-        <h2 className="text-xl font-md text-white mb-4">Manage Your Restaurants</h2>
+        <h2 className="text-xl font-md text-white mb-4">
+          Manage Your Restaurants
+        </h2>
         <div className="flex flex-wrap items-center gap-4">
           {loading ? (
             <div className="flex flex-col items-center mt-4 w-40">
               <Skeleton className="h-20 w-20 rounded-lg bg-gray-500" />
               <div className="space-y-2 mt-2">
-                <Skeleton className="h-4 w-32 bg-gray-500" />
+                <Skeleton className="h-4 w-16 bg-gray-500" />
               </div>
             </div>
           ) : error ? (
-            <p className="text-red-400">Sorry,there is an Error</p>
+            <p className="text-red-400 flex items-center gap-2 w-40">
+              {" "}
+              <MdErrorOutline />
+              Sorry, Try Again.
+            </p>
           ) : (
             <div className="mt-4 flex flex-wrap gap-4">
               {restaurants.length > 0 ? (

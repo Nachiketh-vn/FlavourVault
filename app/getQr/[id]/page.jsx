@@ -47,7 +47,7 @@ function Page({ params }) {
             type="text"
             className="w-full p-3 mb-4 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
             onChange={(e) => setValue(e.target.value)}
-            placeholder="Enter table number or name"
+            placeholder="Enter Total Number of Tables You have"
           />
           <button
             onClick={generateQrCode}
