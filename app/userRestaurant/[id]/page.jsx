@@ -4,7 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { FaEdit } from "react-icons/fa";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import { VscPreview } from "react-icons/vsc";
@@ -14,7 +14,7 @@ import { BiSolidCarousel } from "react-icons/bi";
 
 export default function Page({ params }) {
   const { id } = params;
-  const router = useRouter();
+  // const router = useRouter();
   const restaurantId = id; // Changed to restaurant ID
   const [menuPresent, setMenuPresent] = useState(false);
   const [submitCount, setSubmitCount] = useState(0);
@@ -26,7 +26,7 @@ export default function Page({ params }) {
   useEffect(() => {
     async function fetchMenuSections() {
       try {
-        const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
+        // const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
         const data = await response.json();
         if (data.sections) {
           setMenuPresent(true);
@@ -203,12 +203,12 @@ export default function Page({ params }) {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
         setSubmitCount(submitCount + 1); // Increment submit count for tracking
         toast.success("Menu Created Successfuly"); // Display success message
         // Optionally reset the form or redirect
       } else {
-        const errorData = await response.json();
+        // const errorData = await response.json();
         // alert(`Error: ${errorData.message}`); // Display error message
       }
     } catch (error) {
@@ -251,7 +251,7 @@ export default function Page({ params }) {
           </li>
           <li>
             Please mark <span class="font-semibold">Best Seller</span>,{" "}
-            <span class="font-semibold">Today's Special</span>, and{" "}
+            <span class="font-semibold">Todays Special</span>, and{" "}
             <span class="font-semibold">Must Try</span> precisely, as you will
             be allowed a maximum of 15, 5, and 15 dishes respectively to display
             as Best Seller.
@@ -528,7 +528,7 @@ export default function Page({ params }) {
                         disabled={todaySpecialCount === 0}
                       />
                       <label className="ml-2">
-                        Today's Special {todaySpecialCount}
+                        Todays Special {todaySpecialCount}
                       </label>
                       {todaySpecialCount === 0 && (
                         <span className="text-red-500 ml-2">Limit reached</span>

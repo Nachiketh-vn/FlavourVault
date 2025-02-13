@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
   Stack,
-  Divider,
   Link,
 } from "@mui/material";
 import Navbar from "./navbar";

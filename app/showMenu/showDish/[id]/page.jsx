@@ -10,7 +10,7 @@ import { FaArrowLeftLong } from "react-icons/fa6";
 import { GiChiliPepper } from "react-icons/gi";
 import Dishpage from "../../../../components/dishpage";
 
-function page({ params, searchParams }) {
+function Page({ params, searchParams }) {
   const { id: dishId } = params;
   const restaurantId = searchParams.restaurantId;
   const [dish, setDish] = useState(null);
@@ -161,4 +161,4 @@ function page({ params, searchParams }) {
   );
 }
 
-export default page;
+export default Page;

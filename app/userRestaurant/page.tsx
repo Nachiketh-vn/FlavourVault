@@ -150,11 +150,11 @@ const Page: React.FC = () => {
         <div className="space-y-8">
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-semibold text-orange-600">
-              1. Click on "Add Restaurant":
+              1. Click on Add Restaurant:
             </h2>
             <p className="text-gray-700 mt-2">
               Locate and click the{" "}
-              <span className="font-bold">"Add Restaurant"</span> button to
+              <span className="font-bold">Add Restaurant</span> button to
               begin the registration process.
             </p>
           </div>
@@ -180,11 +180,11 @@ const Page: React.FC = () => {
 
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-semibold text-orange-600">
-              3. Click "Submit":
+              3. Click Submit:
             </h2>
             <p className="text-gray-700 mt-2">
               After filling out all the fields, click the{" "}
-              <span className="font-bold">"Submit"</span> button to save your
+              <span className="font-bold">Submit</span> button to save your
               restaurant details.
             </p>
           </div>

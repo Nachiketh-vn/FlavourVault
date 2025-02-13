@@ -1,16 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
-import { FaEdit } from "react-icons/fa";
+// import { FaEdit } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 
 export default function MenuPage({ params }) {
   const { id: restaurantId } = params;
-  const [menuData, setMenuData] = useState(null);
+  // const [menuData, setMenuData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [segments, setSegments] = useState([]);
@@ -18,7 +18,7 @@ export default function MenuPage({ params }) {
   const [todaySpecialCount, setTodaySpecialCount] = useState(5);
   const [mustTryCount, setMustTryCount] = useState(15);
 
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -387,8 +387,8 @@ export default function MenuPage({ params }) {
                             "todaysSpecial"
                           )
                         }
-                      />{" "}
-                      Today's Special {todaySpecialCount}
+                      />{""}
+                      Todays Special {todaySpecialCount}
                     </label>
 
                     <label>

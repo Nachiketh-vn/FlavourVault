@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { GiKnifeFork } from "react-icons/gi";
-import { FaBookmark } from "react-icons/fa6";
-import { CiBookmark } from "react-icons/ci";
+// import { FaBookmark } from "react-icons/fa6";
+// import { CiBookmark } from "react-icons/ci";
 import Link from "next/link";
-import { IoIosSearch } from "react-icons/io";
-import { Label } from "@/components/ui/label";
+// import { IoIosSearch } from "react-icons/io";
+// import { Label } from "@/components/ui/label";
 import { FaStar } from "react-icons/fa";
 import { FaFire } from "react-icons/fa6";
 import Image from "next/image";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
 function Dishpage({ restaurantId }) {
-  const [menuData, setMenuData] = useState(null);
+  // const [menuData, setMenuData] = useState(null);
   const [error, setError] = useState(null);
   const [segments, setSegments] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [bestSellers, setBestSellers] = useState([]);
-  const [mustTry, setMustTry] = useState([]);
-  const [todaysSpecial, setTodaysSpecial] = useState([]);
+  // const [bestSellers, setBestSellers] = useState([]);
+  // const [mustTry, setMustTry] = useState([]);
+  // const [todaysSpecial, setTodaysSpecial] = useState([]);
   const [isVegMode, setIsVegMode] = useState(false);
+  setIsVegMode(false);
 
   // Function to shuffle an array
   const shuffleArray = (array) => {
@@ -35,7 +36,7 @@ function Dishpage({ restaurantId }) {
         const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
         if (response.ok) {
           const data = await response.json();
-          setMenuData(data);
+          // setMenuData(data);
 
           // Shuffle segments before setting state
           const shuffledSegments = shuffleArray(data.sections || []);
@@ -135,19 +136,6 @@ function Dishpage({ restaurantId }) {
               </span>
             </p>
           </Link>
-          {dish.isVeg ? (
-            <div className="relative top-1 left-2 flex pr-4">
-              <div className="w-4 h-4 border-2 border-green-600 flex rounded justify-center items-center">
-                <div className=" w-2 h-2 rounded-full bg-green-600"></div>
-              </div>
-            </div>
-          ) : (
-            <div className="relative top-1 left-2 flex pr-4">
-              <div className="w-4 h-4 border-2 border-red-600 flex rounded justify-center items-center">
-                <div className=" w-2 h-2 rounded-full bg-red-600"></div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     );
@@ -160,16 +148,9 @@ function Dishpage({ restaurantId }) {
         return (
           filteredDishes.length > 0 && (
             <div key={segmentIndex} className="mb-8">
-              <div className="flex items-center justify-between">
-                <h2 className="text-xl font-semibold mb-4">
-                  {segment.sectionName}
-                </h2>
-                <Link
-                  href={`/showMenu/showSegment/${segment._id}?restaurantId=${restaurantId}`}
-                >
-                  <p className="text-sm text-blue-500">See All</p>
-                </Link>
-              </div>
+              <h2 className="text-xl font-semibold mb-4">
+                {segment.sectionName}
+              </h2>
               <div className="flex overflow-x-auto space-x-2 custom-scroll">
                 {filteredDishes.map(renderDishCard)}
               </div>

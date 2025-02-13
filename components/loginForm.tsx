@@ -4,12 +4,10 @@ import React, { FormEvent, useState } from "react";
 import {
   Box,
   Button,
-  Checkbox,
   TextField,
   Link,
   Typography,
   Stack,
-  FormControlLabel,
   Divider,
 } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
@@ -142,7 +140,7 @@ const SignIn: React.FC = () => {
                 className="text-slate-300"
                 sx={{ color: "#E0E0E0" }}
               >
-                Don't have an account?{" "}
+                Dont have an account?{" "}
                 <span className="text-white">Register</span>
               </Link>
 

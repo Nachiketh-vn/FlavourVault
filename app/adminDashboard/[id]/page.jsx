@@ -16,7 +16,7 @@ function AdminDashboard({ params }) {
     if (selectedSection === "reviews") {
       fetchReviews();
     }
-  }, [selectedSection]);
+  }, [selectedSection, fetchReviews]);
 
   const fetchReviews = async () => {
     try {

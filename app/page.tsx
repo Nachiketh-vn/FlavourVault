@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import { BackgroundBeams } from "../components/ui/background-beams";
 import Navbar from "@/components/navbar";
 import Link from "next/link";

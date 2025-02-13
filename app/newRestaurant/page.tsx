@@ -66,11 +66,11 @@ const RestaurantForm: React.FC = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
         toast.success("Successfully created!"); // Show success message
         router.push("/userRestaurant"); // Redirect to the home page after successful registration
       } else {
-        const errorData = await response.json();
+        // const errorData = await response.json();
         toast.error("An error Occurred");;
       }
     } catch (error) {

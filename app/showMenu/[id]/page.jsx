@@ -9,10 +9,10 @@ import { FaStar } from "react-icons/fa";
 import { FaFire } from "react-icons/fa6";
 import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 
-function Page({ params, searchParams }) {
+function Page({ params }) {
   const { id: restaurantId } = params;
-  const table = searchParams.table;
-  const [menuData, setMenuData] = useState(null);
+  // const table = searchParams.table;
+  // const [menuData, setMenuData] = useState(null);
   const [error, setError] = useState(null);
   const [segments, setSegments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -208,7 +208,7 @@ function Page({ params, searchParams }) {
         {filterBySearch(filterDishes(todaysSpecial)).length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Today's Special
+              Todays Special
             </h2>
             <div className="flex gap-2 overflow-x-auto custom-scroll">
               {filterBySearch(filterDishes(todaysSpecial)).map(renderDishCard)}
