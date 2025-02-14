@@ -46,7 +46,13 @@ export const authOptions: NextAuthOptions = {
   ],
 
   callbacks: {
-    async signIn({ user, account }: { user: any; account: Account | null }): Promise<any | false> {
+    async signIn({
+      user,
+      account,
+    }: {
+      user: unknown;
+      account: Account | null;
+    }): Promise<unknown | false> {
       if (account?.provider === "google") {
         const { name, email } = user;
 
@@ -82,7 +88,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   secret: process.env.NEXTAUTH_SECRET!,
-  
+
   pages: {
     signIn: "/login", // Custom login page
   },
