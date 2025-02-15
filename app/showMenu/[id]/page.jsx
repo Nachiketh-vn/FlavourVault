@@ -12,7 +12,7 @@ import { MdKeyboardDoubleArrowRight } from "react-icons/md";
 function Page({ params }) {
   const { id: restaurantId } = params;
   // const table = searchParams.table;
-  // const [menuData, setMenuData] = useState(null);
+  const [menuData, setMenuData] = useState(null);
   const [error, setError] = useState(null);
   const [segments, setSegments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,12 +22,15 @@ function Page({ params }) {
   const [isVegMode, setIsVegMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+
   useEffect(() => {
     const fetchMenu = async () => {
       try {
         const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
         if (response.ok) {
           const data = await response.json();
+           console.log(menuData);
+
           setMenuData(data);
           setSegments(data.sections || []);
 

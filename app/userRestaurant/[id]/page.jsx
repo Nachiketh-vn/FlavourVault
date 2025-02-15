@@ -26,13 +26,13 @@ export default function Page({ params }) {
   useEffect(() => {
     async function fetchMenuSections() {
       try {
-        // const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
+        const response = await fetch(`/api/menu?restaurantId=${restaurantId}`);
         const data = await response.json();
         if (data.sections) {
           setMenuPresent(true);
         }
       } catch (error) {
-        setError(error.message);
+       console.log(error.message);
       }
     }
 

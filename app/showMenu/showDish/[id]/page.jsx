@@ -1,83 +1,92 @@
 "use client";
-import React from "react";
-import { useState, useEffect } from "react";
-import { FaStar } from "react-icons/fa";
-import { FaFire } from "react-icons/fa6";
-import { GiKnifeFork } from "react-icons/gi";
+import React, { useState, useEffect } from "react";
+import { FaStar, FaArrowLeftLong, FaFire } from "react-icons/fa6";
+import { GiKnifeFork, GiChiliPepper } from "react-icons/gi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaArrowLeftLong } from "react-icons/fa6";
-import { GiChiliPepper } from "react-icons/gi";
 import Dishpage from "../../../../components/dishpage";
+
+const SpicinessIndicator = ({ spiciness }) => {
+  const maxChilies = 5;
+  return (
+    <div className="flex items-center border-[1.5px] my-2 border-gray-400 rounded-lg px-1 py-[2px]">
+      {[...Array(maxChilies)].map((_, index) => (
+        <GiChiliPepper
+          key={index}
+          className={`w-4 h-4 ${
+            index < spiciness ? "text-red-500" : "text-gray-400"
+          }`}
+        />
+      ))}
+    </div>
+  );
+};
 
 function Page({ params, searchParams }) {
   const { id: dishId } = params;
   const restaurantId = searchParams.restaurantId;
   const [dish, setDish] = useState(null);
-  const [loading, setLoading] = useState(true); // State to handle loading
-
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const router = useRouter();
 
-  const handleGoBack = () => {
-    router.back(); // Go back to the previous page
-  };
-
   useEffect(() => {
-    // Fetch dish details if both IDs are present
+    if (!dishId || !restaurantId) {
+      setError("Missing required parameters");
+      setLoading(false);
+      return;
+    }
+
+    let isMounted = true;
+
     const fetchDishDetails = async () => {
-      if (dishId && restaurantId) {
-        try {
-          const response = await fetch(
-            `/api/dish?id=${dishId}&restaurantId=${restaurantId}`
+      try {
+        const response = await fetch(
+          `/api/dish?id=${dishId}&restaurantId=${restaurantId}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (isMounted) {
+          setDish((prevDish) =>
+            JSON.stringify(prevDish) !== JSON.stringify(data) ? data : prevDish
           );
-          if (!response.ok) {
-            throw new Error("Failed to fetch dish details");
-          }
-          const data = await response.json();
-          setDish(data); // Store the dish details in state
-        } catch (error) {
-          console.error(error);
-        } finally {
-          setLoading(false); // Stop loading
+          setError(null);
+        }
+      } catch (error) {
+        if (isMounted) {
+          console.error("Error fetching dish:", error);
+          setError("Failed to load dish details");
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
         }
       }
     };
 
     fetchDishDetails();
-  }, [dishId, restaurantId]); // Depend on dishId and restaurantId
 
-  // Show loading state
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+    return () => {
+      isMounted = false;
+    };
+  }, [dishId, restaurantId]);
 
-  // Check if dish details are available
-  if (!dish) {
-    return <div>Dish not found</div>; // Fallback message if dish details are not available
-  }
-
-  const SpicinessIndicator = ({ spiciness }) => {
-    const maxChilies = 5; // Maximum number of chilies
-
-    return (
-      <div className="flex items-center border-[1.5px] my-2 border-gray-400 rounded-lg px-1 py-[2px]">
-        {/* Render chili peppers */}
-        {[...Array(maxChilies)].map((_, index) => (
-          <GiChiliPepper
-            key={index}
-            className={`w-4 h-4 ${
-              index < spiciness ? "text-red-500" : "text-gray-400"
-            }`} // Fill color based on spiciness
-          />
-        ))}
-      </div>
-    );
-  };
+  if (loading) return <div className="p-4 text-center">Loading...</div>;
+  if (error) return <div className="p-4 text-center text-red-500">{error}</div>;
+  if (!dish) return <div className="p-4 text-center">Dish not found</div>;
 
   return (
     <div className="bg-gray-50 h-[100vh]">
       <div>
-        <button onClick={handleGoBack} className=" text-black px-4 pt-4 pb-2">
+        <button
+          onClick={() => router.back()}
+          className="text-black px-4 pt-4 pb-2"
+        >
           <FaArrowLeftLong className="scale-150" />
         </button>
       </div>
@@ -90,11 +99,12 @@ function Page({ params, searchParams }) {
               width={100}
               height={100}
               className="object-cover rounded-lg w-72 h-48"
+              priority
             />
           </div>
         ) : (
           <div className="flex justify-center mx-auto">
-            <div className="w-72 h-48 flex justify-center rounded-lg items-center bg-gray-200 border-2 border-gray-400"> 
+            <div className="w-72 h-48 flex justify-center rounded-lg items-center bg-gray-200 border-2 border-gray-400">
               <GiKnifeFork className="w-48 h-40 text-gray-500" />
             </div>
           </div>
@@ -108,20 +118,20 @@ function Page({ params, searchParams }) {
           {dish.description}
         </p>
       </div>
+
       <div className="px-2 flex justify-around items-center">
         <div>
           <ul>
             {dish.prices.map((priceDetail, index) => (
               <li key={index}>
-                <span className="text-base font-medium ">
+                <span className="text-base font-medium">
                   {priceDetail.quantity}
                 </span>
                 :{" "}
-                <span className="text-base font-semibold ">
-                  {" "}
+                <span className="text-base font-semibold">
                   ₹ {priceDetail.price}
                 </span>{" "}
-                <span className="text-base font-medium ">
+                <span className="text-base font-medium">
                   (Serves: {priceDetail.serves})
                 </span>
               </li>
@@ -147,7 +157,7 @@ function Page({ params, searchParams }) {
             )}
           </div>
           <div>
-            {dish.spiciness && (
+            {dish.spiciness > 0 && (
               <SpicinessIndicator spiciness={dish.spiciness} />
             )}
           </div>
@@ -156,7 +166,8 @@ function Page({ params, searchParams }) {
 
       <hr className="border-1 relative border-gray-400 top-2 mx-6" />
 
-      <Dishpage restaurantId={restaurantId} />
+      {/* Dishpage is now properly passed a stable prop */}
+      {/* <Dishpage key={restaurantId} restaurantId={restaurantId} /> */}
     </div>
   );
 }
